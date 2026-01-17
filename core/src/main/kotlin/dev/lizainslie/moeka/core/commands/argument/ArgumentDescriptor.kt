@@ -1,9 +1,9 @@
 package dev.lizainslie.moeka.core.commands.argument
 
-import dev.lizainslie.moeka.core.validation.Validator
-import org.slf4j.LoggerFactory
+import cloud.kore.lib.validate.Validator
 import kotlin.reflect.KClass
 
+@Suppress("LongParameterList")
 class ArgumentDescriptor<T : Any>(
     val tClass: KClass<T>,
     val name: String,
@@ -14,9 +14,7 @@ class ArgumentDescriptor<T : Any>(
     val validator: Validator<T>? = null,
     val autoComplete: (() -> List<String>)? = null,
 ) {
-    private val log = LoggerFactory.getLogger(this.javaClass)
-
-//    suspend fun resolve(commandContext: CommandContext): T? {
+    //    suspend fun resolve(commandContext: CommandContext): T? {
 //        log.debug("Resolving argument `$name` with type `${argumentType::class.simpleName}`")
 //
 //        val value = commandContext.resolveRawArgumentValue(this)
@@ -45,6 +43,7 @@ class ArgumentDescriptor<T : Any>(
 //    }
 
     companion object {
+        @Suppress("LongParameterList")
         inline operator fun <reified T : Any> invoke(
             name: String,
             description: String,

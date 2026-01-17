@@ -7,9 +7,9 @@ import dev.lizainslie.moeka.core.commands.argument.ArgumentDescriptor
 import dev.lizainslie.moeka.core.commands.argument.ArgumentType
 import dev.lizainslie.moeka.core.platforms.PlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformKey
-import dev.lizainslie.moeka.core.validation.ValidationDsl
-import dev.lizainslie.moeka.core.validation.Validator
-import dev.lizainslie.moeka.core.validation.buildValidator
+import cloud.kore.lib.validate.ValidationDsl
+import cloud.kore.lib.validate.Validator
+import cloud.kore.lib.validate.buildValidator
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract

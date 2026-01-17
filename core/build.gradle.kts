@@ -8,15 +8,18 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
-version = "0.0.1"
+group = rootProject.group
+version = rootProject.version
 
 dependencies {
     implementation(libs.bundles.exposed)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.slf4jApi)
     implementation(libs.bundles.okhttp)
+
+    implementation(libs.korelibs.validate.core)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.okio)
+    implementation(libs.slf4jApi)
 
     testImplementation(kotlin("test"))
 }
@@ -40,7 +43,7 @@ publishing {
     }
 
     mavenPublishing {
-        coordinates("dev.lizainslie.moeka", "moeka-core", version.toString())
+        coordinates(group.toString(), "moeka-core", version.toString())
 
         pom {
             name.set("Pitohui Core")

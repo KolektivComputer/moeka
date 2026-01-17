@@ -2,11 +2,11 @@ package dev.lizainslie.moeka.core.commands.argument
 
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
-import dev.lizainslie.moeka.core.validation.ValidationResult
-import dev.lizainslie.moeka.core.validation.Validator
-import dev.lizainslie.moeka.core.validation.buildValidator
-import dev.lizainslie.moeka.core.validation.hexColor
-import dev.lizainslie.moeka.core.validation.validateValue
+import cloud.kore.lib.validate.ValidationResult
+import cloud.kore.lib.validate.Validator
+import cloud.kore.lib.validate.buildValidator
+import cloud.kore.lib.validate.validateValue
+import cloud.kore.lib.validate.validators.primitive.string.hexColor
 import org.slf4j.LoggerFactory
 import java.awt.Color
 import kotlin.time.Duration

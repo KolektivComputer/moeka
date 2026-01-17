@@ -1,10 +1,8 @@
 # Moeka
-
 A multiplatform, modular framework for writing bots across Discord, Matrix, and
 other platforms. Originally written for [Pitohui][pito_source].
 
 ## Including Moeka in Your Project:
-
 Whether you are writing a module or a bot, you'll need to add my repository:
 ```kt
 // build.gradle.kts, settings.gradle.kts, wherever you define your repositories,
@@ -14,12 +12,11 @@ maven {
 }
 ```
 
-The latest Moeka version at the time of writing is `0.0.1`, however I won't
+The latest Moeka version at the time of writing is `0.0.2`, however I won't
 promise this page will stay up to date with the latest version. instead, please
 view the list of [available releases][moeka_releases]
 
 ### Creating a Module
-
 If you are developing a module, do not shade the core or platform module, use
 `api` instead of `implementation`:
 
@@ -48,9 +45,8 @@ dependencies {
 ## Documentation?
 **Soon:tm:** (when I feel like it)
 
-
 ## Legal
-Licensed under the [MIT License](LICENSE).
+Moeka is released under the permissive [MIT License](LICENSE).
 
 [pito_source]: https://git.lizainslie.dev/crackcafe/pitohui
 [moeka_releases]: https://repo.lizainslie.dev/#browse/browse:maven-releases:dev%2Flizainslie%2Fmoeka

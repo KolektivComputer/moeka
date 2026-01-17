@@ -8,15 +8,19 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
-version = "0.0.1"
+group = rootProject.group
+version = rootProject.version
 
 dependencies {
     api(project(":core"))
 
-    implementation(libs.slf4jApi)
-    implementation(libs.kord.core)
     implementation(libs.bundles.exposed)
+
+    implementation(libs.kord.core)
+    implementation(libs.korelibs.validate.core)
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.slf4jApi)
 
     testImplementation(kotlin("test"))
 }
@@ -40,13 +44,13 @@ publishing {
     }
 
     mavenPublishing {
-        coordinates("dev.lizainslie.moeka", "moeka-discord", version.toString())
+        coordinates(group.toString(), "moeka-discord", version.toString())
 
         pom {
             name.set("Pitohui Core")
             description.set("Core functionality for Moeka, a multi-platform bot framework written in Kotlin")
             inceptionYear.set("2025")
-            url.set("https://git.lizainslie.dev/crack-cafe/moeka/")
+            url.set("https://git.lizainslie.dev/crackcafe/moeka/")
             licenses {
                 license {
                     name.set("The MIT License (MIT)")
@@ -62,9 +66,9 @@ publishing {
                 }
             }
             scm {
-                url.set("https://git.lizainslie.dev/crack-cafe/moeka/")
-                connection.set("scm:git:git://git.lizainslie.dev/crack-cafe/moeka.git")
-                developerConnection.set("scm:git:ssh://git@git.lizainslie.dev/crack-cafe/moeka.git")
+                url.set("https://git.lizainslie.dev/crackcafe/moeka/")
+                connection.set("scm:git:git://git.lizainslie.dev/crackcafe/moeka.git")
+                developerConnection.set("scm:git:ssh://git@git.lizainslie.dev/crackcafe/moeka.git")
             }
         }
     }

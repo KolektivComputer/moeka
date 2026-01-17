@@ -1,7 +1,7 @@
 package dev.lizainslie.moeka.core.commands.argument
 
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
-import dev.lizainslie.moeka.core.validation.ValidationResult
+import cloud.kore.lib.validate.ValidationResult
 
 class ResolvedArgument<T : Any>(
     val descriptor: ArgumentDescriptor<T>,

@@ -2,6 +2,12 @@ dependencyResolutionManagement {
     @Suppress("UnstableApiUsage")
     repositories {
         mavenCentral()
+        maven {
+            url = uri("https://repo.lizainslie.dev/repository/maven-public/")
+        }
+//        maven {
+//            url = uri("https://repo.lizainslie.dev/repository/maven-snapshots/")
+//        }
     }
 }
 

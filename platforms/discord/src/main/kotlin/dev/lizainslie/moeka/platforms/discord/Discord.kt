@@ -29,7 +29,7 @@ import dev.lizainslie.moeka.core.modules.ModuleVisibility
 import dev.lizainslie.moeka.core.platforms.PlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.PlatformKey
-import dev.lizainslie.moeka.core.validation.ValidationResult
+import cloud.kore.lib.validate.ValidationResult
 import dev.lizainslie.moeka.platforms.discord.commands.DiscordCommandConfig
 import dev.lizainslie.moeka.platforms.discord.commands.DiscordSlashCommandContext
 import dev.lizainslie.moeka.platforms.discord.config.DiscordPlatformConfig
