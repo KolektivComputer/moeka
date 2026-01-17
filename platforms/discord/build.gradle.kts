@@ -5,6 +5,7 @@ plugins {
     // Apply Kotlin Serialization plugin from `gradle/libs.versions.toml`.
     alias(libs.plugins.kotlinPluginSerialization)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.ktlint)
 }
 
 version = "0.0.1"
@@ -25,11 +26,14 @@ publishing {
         maven {
             name = "lizAinslie"
 
-            url = uri(
-                if (version.toString().endsWith("SNAPSHOT"))
-                    "https://repo.lizainslie.dev/repository/maven-snapshots/"
-                else "https://repo.lizainslie.dev/repository/maven-releases/"
-            )
+            url =
+                uri(
+                    if (version.toString().endsWith("SNAPSHOT")) {
+                        "https://repo.lizainslie.dev/repository/maven-snapshots/"
+                    } else {
+                        "https://repo.lizainslie.dev/repository/maven-releases/"
+                    },
+                )
 
             credentials(PasswordCredentials::class)
         }

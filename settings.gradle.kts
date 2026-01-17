@@ -13,3 +13,5 @@ plugins {
 include(":core")
 
 include(":platforms:discord")
+
+rootProject.name = "moeka"
