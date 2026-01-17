@@ -5,7 +5,7 @@ other platforms. Originally written for [Pitohui][pito_source].
 
 ## Including Moeka in Your Project:
 
-Whether you are writing a module or a bot, you will need to add my repository:
+Whether you are writing a module or a bot, you'll need to add my repository:
 ```kt
 // build.gradle.kts, settings.gradle.kts, wherever you define your repositories,
 // add this declaration:

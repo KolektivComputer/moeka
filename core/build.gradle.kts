@@ -46,7 +46,7 @@ publishing {
             name.set("Pitohui Core")
             description.set("Core functionality for Moeka, a multi-platform bot framework written in Kotlin")
             inceptionYear.set("2025")
-            url.set("https://git.lizainslie.dev/crack-cafe/moeka/")
+            url.set("https://git.lizainslie.dev/crackcafe/moeka/")
             licenses {
                 license {
                     name.set("The MIT License (MIT)")
@@ -62,9 +62,9 @@ publishing {
                 }
             }
             scm {
-                url.set("https://git.lizainslie.dev/crack-cafe/moeka/")
-                connection.set("scm:git:git://git.lizainslie.dev/crack-cafe/moeka.git")
-                developerConnection.set("scm:git:ssh://git@git.lizainslie.dev/crack-cafe/moeka.git")
+                url.set("https://git.lizainslie.dev/crackcafe/moeka/")
+                connection.set("scm:git:git://git.lizainslie.dev/crackcafe/moeka.git")
+                developerConnection.set("scm:git:ssh://git@git.lizainslie.dev/crackcafe/moeka.git")
             }
         }
     }
