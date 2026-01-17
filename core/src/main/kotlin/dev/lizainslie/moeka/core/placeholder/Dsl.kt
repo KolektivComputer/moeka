@@ -2,11 +2,12 @@
 
 package dev.lizainslie.moeka.core.placeholder
 
-import dev.lizainslie.pitohui.core.annotations.PitohuiDsl
+import dev.lizainslie.moeka.core.annotations.MoekaDsl
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
-@PitohuiDsl
+@MoekaDsl
+@Suppress("MatchingDeclarationName")
 class PlaceholderMatrixDsl {
     val matrix = PlaceholderMatrix()
 

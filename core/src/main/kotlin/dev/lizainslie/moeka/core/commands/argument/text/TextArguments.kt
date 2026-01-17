@@ -1,6 +1,6 @@
-package dev.lizainslie.pitohui.core.commands.argument.text
+package dev.lizainslie.moeka.core.commands.argument.text
 
-import dev.lizainslie.pitohui.core.commands.BaseCommand
+import dev.lizainslie.moeka.core.commands.BaseCommand
 
 class TextArguments(
     private val command: BaseCommand,

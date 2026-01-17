@@ -1,4 +1,4 @@
-package dev.lizainslie.pitohui.core.commands.argument.text
+package dev.lizainslie.moeka.core.commands.argument.text
 
 /**
  * Class representing an iteration position over a given string, with

@@ -2,12 +2,12 @@
 
 package dev.lizainslie.moeka.core.manual
 
-import dev.lizainslie.pitohui.core.annotations.PitohuiDsl
+import dev.lizainslie.moeka.core.annotations.MoekaDsl
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-@PitohuiDsl
+@MoekaDsl
 class ManualDsl(
     private val identifier: String,
     private val title: String,
@@ -27,7 +27,7 @@ class ManualDsl(
     fun build() = Manual(identifier, title, pages)
 }
 
-@PitohuiDsl
+@MoekaDsl
 class ManualPageDsl(
     var title: String,
     var description: String,
