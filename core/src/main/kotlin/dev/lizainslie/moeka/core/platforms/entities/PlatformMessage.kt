@@ -6,7 +6,7 @@ import kotlinx.datetime.Instant
 /**
  * A platform-agnostic representation of a message
  */
-interface PlatformMessage {
+interface PlatformMessage : PlatformEntity {
     /**
      * The [content] of this message
      */
@@ -20,14 +20,14 @@ interface PlatformMessage {
     /**
      * The ID of this message's [author]
      */
-    val authorId: PlatformId
+    val authorId: PlatformId?
 
     /**
      * This message's author.
      *
      * Note: When overriding, use `get() = { ... }` syntax.
      */
-    val author: PlatformUser
+    val author: PlatformUser?
 
     /**
      * The ID of the [channel] in which this message was sent.

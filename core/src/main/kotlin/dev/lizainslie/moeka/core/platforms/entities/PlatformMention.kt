@@ -8,6 +8,6 @@ package dev.lizainslie.moeka.core.platforms.entities
  *
  * todo: maybe have implementors prefer a value class??
  */
-interface PlatformMention {
+interface PlatformMention : PlatformEntity {
     override fun toString(): String // must override.
 }

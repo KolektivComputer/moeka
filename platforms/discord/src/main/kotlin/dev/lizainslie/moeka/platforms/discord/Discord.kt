@@ -30,9 +30,13 @@ import dev.lizainslie.moeka.core.platforms.PlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.PlatformKey
 import cloud.kore.lib.validate.ValidationResult
+import dev.kord.common.entity.DiscordGuild
+import dev.lizainslie.moeka.platforms.discord.cache.asDiscord
 import dev.lizainslie.moeka.platforms.discord.commands.DiscordCommandConfig
 import dev.lizainslie.moeka.platforms.discord.commands.DiscordSlashCommandContext
 import dev.lizainslie.moeka.platforms.discord.config.DiscordPlatformConfig
+import dev.lizainslie.moeka.platforms.discord.entities.DiscordCommunity
+import dev.lizainslie.moeka.platforms.discord.entities.DiscordUser
 import dev.lizainslie.moeka.platforms.discord.extensions.arguments
 import dev.lizainslie.moeka.platforms.discord.extensions.platform
 import dev.lizainslie.moeka.platforms.discord.extensions.snowflake
@@ -48,6 +52,14 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
     val config by Configs.config<DiscordPlatformConfig>()
 
     lateinit var kord: Kord
+
+    val users get() = bot.caches.users.asDiscord<DiscordUser> { id ->
+        getUserById(id)?.let { DiscordUser(it) }
+    }
+
+    val communities get() = bot.caches.users.asDiscord<DiscordCommunity> { id ->
+        getGuildById(id)?.let { DiscordCommunity(it) }
+    }
 
     override val channelArgumentParser =
         PlatformArgumentParseFn { value ->

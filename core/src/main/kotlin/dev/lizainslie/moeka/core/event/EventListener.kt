@@ -1,3 +1,3 @@
-package dev.lizainslie.moeka.core.events
+package dev.lizainslie.moeka.core.event
 
 typealias EventListener<TEvent> = TEvent.() -> Unit

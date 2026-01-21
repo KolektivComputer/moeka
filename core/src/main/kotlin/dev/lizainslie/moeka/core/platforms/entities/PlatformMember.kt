@@ -17,4 +17,7 @@ interface PlatformMember : PlatformUser {
      * Note: When overriding, use `get() = { ... }` syntax.
      */
     val community: PlatformCommunity
+
+    val isOwner: Boolean
+    val nickname: String?
 }

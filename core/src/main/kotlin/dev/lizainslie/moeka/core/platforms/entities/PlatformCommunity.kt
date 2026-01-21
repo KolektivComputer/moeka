@@ -1,5 +1,6 @@
 package dev.lizainslie.moeka.core.platforms.entities
 
+import dev.lizainslie.moeka.core.cache.accessor.PlatformEntityCacheAccessor
 import dev.lizainslie.moeka.core.platforms.PlatformId
 
 /**
@@ -36,14 +37,18 @@ interface PlatformCommunity : PlatformEntity {
      *
      * Note: When overriding, use `get() = { ... }` syntax.
      */
-    val ownerUser: PlatformUser
+    val ownerUser: PlatformUser?
 
     /**
      * The owner of this community as a member
      *
      * Note: When overriding, use `get() = { ... }` syntax.
      */
-    val ownerMember: PlatformMember
+    val ownerMember: PlatformMember?
+
+    suspend fun getOwnerUser(): PlatformUser?
+    suspend fun getOwnerMember(platformId: PlatformId): PlatformMember?
 
     // todo: getters/flows/other access for channels, members.
+    val members: PlatformEntityCacheAccessor<PlatformMember>
 }
