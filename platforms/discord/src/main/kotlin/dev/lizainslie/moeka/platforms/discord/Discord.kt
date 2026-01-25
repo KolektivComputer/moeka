@@ -30,7 +30,6 @@ import dev.lizainslie.moeka.core.platforms.PlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.PlatformKey
 import cloud.kore.lib.validate.ValidationResult
-import dev.kord.common.entity.DiscordGuild
 import dev.lizainslie.moeka.platforms.discord.cache.asDiscord
 import dev.lizainslie.moeka.platforms.discord.commands.DiscordCommandConfig
 import dev.lizainslie.moeka.platforms.discord.commands.DiscordSlashCommandContext

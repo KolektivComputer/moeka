@@ -20,4 +20,6 @@ interface PlatformMember : PlatformUser {
 
     val isOwner: Boolean
     val nickname: String?
+    suspend fun setNickname(nickname: String?)
+    suspend fun clearNickname() = setNickname(null)
 }

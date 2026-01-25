@@ -20,6 +20,4 @@ interface PlatformUser : PlatformEntity {
      * The user's mention.
      */
     val mention: PlatformMention
-
-    val mutualCommunities: PlatformEntityCacheAccessor<PlatformCommunity>
 }

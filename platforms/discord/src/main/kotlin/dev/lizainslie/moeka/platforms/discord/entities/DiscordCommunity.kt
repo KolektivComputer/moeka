@@ -32,7 +32,7 @@ class DiscordCommunity(
 
     override val ownerMember = members[ownerId]
 
-    override val members: DiscordEntityCacheWrapper<DiscordMember> get() =
+    val members get() =
         Discord.bot.caches.members.asDiscord<DiscordMember>(
             fetch = { id ->
                 guild.members.firstOrNull { it.id.platform == id }?.let {
@@ -46,5 +46,4 @@ class DiscordCommunity(
             },
             predicate = { it.communityId == id }
         )
-
 }

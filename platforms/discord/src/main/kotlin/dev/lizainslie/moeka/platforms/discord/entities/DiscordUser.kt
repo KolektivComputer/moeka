@@ -22,7 +22,7 @@ open class DiscordUser(
 
     open val effectiveName: String get() = displayName ?: username
 
-    override val mutualCommunities: PlatformEntityCacheAccessor<PlatformCommunity>
+    val mutualCommunities
         get() = Discord.communities.asDiscord<DiscordCommunity>(
             fetch = { id ->
                 Discord.getGuildById(id)?.let {

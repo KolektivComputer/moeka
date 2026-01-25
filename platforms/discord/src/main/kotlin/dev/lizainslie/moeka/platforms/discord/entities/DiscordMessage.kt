@@ -26,5 +26,5 @@ open class DiscordMessage(
     )
 
     override val channel: PlatformChannel get() = TODO()
-    override val author: PlatformUser? get() = TODO()
+    override val author: DiscordUser? get() = TODO()
 }

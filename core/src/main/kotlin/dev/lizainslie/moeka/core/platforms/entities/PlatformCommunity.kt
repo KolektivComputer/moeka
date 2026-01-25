@@ -50,5 +50,5 @@ interface PlatformCommunity : PlatformEntity {
     suspend fun getOwnerMember(platformId: PlatformId): PlatformMember?
 
     // todo: getters/flows/other access for channels, members.
-    val members: PlatformEntityCacheAccessor<PlatformMember>
+//    val members: PlatformEntityCacheAccessor<PlatformMember>
 }

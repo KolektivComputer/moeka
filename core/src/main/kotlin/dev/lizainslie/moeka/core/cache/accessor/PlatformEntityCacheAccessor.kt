@@ -4,6 +4,7 @@ import dev.lizainslie.moeka.core.cache.Cache
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.entities.PlatformEntity
+import dev.lizainslie.moeka.core.platforms.entities.PlatformUser
 import javax.sql.rowset.Predicate
 
 interface PlatformEntityCacheAccessor<TEntity : PlatformEntity> : CacheAccessor<PlatformId, TEntity> {

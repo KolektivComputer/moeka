@@ -4,7 +4,6 @@ import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.RootCommand
 import dev.lizainslie.moeka.core.config.ConfigBase
 import dev.lizainslie.moeka.core.config.Configs
-import dev.lizainslie.moeka.core.data.entities.DeveloperOptions
 import dev.lizainslie.moeka.core.data.entities.ModuleSwitch
 import dev.lizainslie.moeka.core.fs.BotFS
 import dev.lizainslie.moeka.core.fs.ModuleTemp
@@ -53,10 +52,10 @@ abstract class AbstractModule(
             supportsPlatform(communityId.platform) && ModuleSwitch.isModuleEnabled(communityId, name)
         }
 
-    open fun shouldRegisterCommand(rootCommand: RootCommand, communityId: PlatformId, callerId: PlatformId): Boolean =
-        if (this.visibility == ModuleVisibility.DEVELOPER) transaction {
-            DeveloperOptions.isUserDeveloper(callerId)
-        }
+//    open fun shouldRegisterCommand(rootCommand: RootCommand, communityId: PlatformId, callerId: PlatformId): Boolean =
+//        if (this.visibility == ModuleVisibility.DEVELOPER) transaction {
+//            DeveloperOptions.isUserDeveloper(callerId)
+//        }
 
     fun supportsPlatform(platform: AnyPlatformAdapter) =
         this::class.annotations.filterIsInstance<SupportPlatforms>().any {
