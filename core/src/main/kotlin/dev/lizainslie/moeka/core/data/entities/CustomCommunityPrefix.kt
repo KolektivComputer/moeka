@@ -2,11 +2,13 @@ package dev.lizainslie.moeka.core.data.entities
 
 import dev.lizainslie.moeka.core.data.tables.CustomCommunityPrefixTable
 import dev.lizainslie.moeka.core.platforms.PlatformId
-import org.jetbrains.exposed.dao.CompositeEntity
-import org.jetbrains.exposed.dao.CompositeEntityClass
-import org.jetbrains.exposed.dao.id.CompositeID
-import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.dao.id.CompositeID
+import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.dao.CompositeEntity
+import org.jetbrains.exposed.v1.dao.CompositeEntityClass
+
 
 class CustomCommunityPrefix(
     id: EntityID<CompositeID>,

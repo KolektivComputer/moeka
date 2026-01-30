@@ -14,8 +14,9 @@ import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.PlatformKey
 import dev.lizainslie.moeka.core.platforms.SupportPlatforms
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
