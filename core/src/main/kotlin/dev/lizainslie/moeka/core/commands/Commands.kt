@@ -9,7 +9,7 @@ import dev.lizainslie.moeka.core.logging.suspendLogTag
 import dev.lizainslie.moeka.core.modules.AbstractModule
 import dev.lizainslie.moeka.core.modules.ModuleVisibility
 import dev.lizainslie.moeka.core.platforms.UnsupportedPlatformException
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 import org.slf4j.LoggerFactory
 
 class Commands(
@@ -114,7 +114,7 @@ class Commands(
                 }
 
                 val devOpts =
-                    newSuspendedTransaction {
+                    suspendTransaction {
                         DeveloperOptions.getDeveloperOptions(context.callerId)
                     }
 

@@ -2,9 +2,11 @@ package dev.lizainslie.moeka.core.data
 
 import dev.lizainslie.moeka.core.config.Configs
 import dev.lizainslie.moeka.core.logging.logTag
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.v1.migration.jdbc.MigrationUtils
+
 import org.slf4j.LoggerFactory
 
 object DbContext {

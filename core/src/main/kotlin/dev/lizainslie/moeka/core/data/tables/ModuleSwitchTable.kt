@@ -1,6 +1,6 @@
 package dev.lizainslie.moeka.core.data.tables
 
-import org.jetbrains.exposed.dao.id.CompositeIdTable
+import org.jetbrains.exposed.v1.core.dao.id.CompositeIdTable
 
 // inb4 this shit catches on fire the first time i run it
 

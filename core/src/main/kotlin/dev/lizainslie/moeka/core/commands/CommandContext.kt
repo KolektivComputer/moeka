@@ -8,7 +8,7 @@ import dev.lizainslie.moeka.core.modules.AbstractModule
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.entities.PlatformResponse
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KProperty
@@ -59,12 +59,12 @@ abstract class CommandContext(
     val isInCommunity get() = communityId != null
 
     suspend fun callerIsDeveloper() =
-        newSuspendedTransaction {
+        suspendTransaction {
             DeveloperOptions.isUserDeveloper(callerId)
         }
 
     suspend fun callerIsStealth() =
-        newSuspendedTransaction {
+        suspendTransaction {
             DeveloperOptions.getDeveloperOptions(callerId)?.stealth ?: false
         }
 

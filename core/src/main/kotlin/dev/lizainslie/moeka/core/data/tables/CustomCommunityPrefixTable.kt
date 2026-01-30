@@ -1,6 +1,6 @@
 package dev.lizainslie.moeka.core.data.tables
 
-import org.jetbrains.exposed.dao.id.CompositeIdTable
+import org.jetbrains.exposed.v1.core.dao.id.CompositeIdTable
 
 object CustomCommunityPrefixTable : CompositeIdTable("custom_community_prefixes") {
     val platform = varchar("platform", 32).entityId()
