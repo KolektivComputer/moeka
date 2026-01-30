@@ -2,14 +2,15 @@ package dev.lizainslie.moeka.core.fs
 
 import dev.lizainslie.moeka.core.Bot
 import java.io.File
+import java.nio.file.Paths
 
 object BotFS {
     /**
      * The root bot directory
      */
     val baseDir: File =
-        System.getProperty("pitohui.bot.dir")?.let { File(it) }
-            ?: File(Bot::class.java.protectionDomain.codeSource.location.path).parentFile
+        System.getProperty("moeka.bot.dir")?.let { File(it) }
+            ?: Paths.get("").toAbsolutePath().toFile()
 
     /**
      * The directory where hosts are expected to place platform and module
