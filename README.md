@@ -8,7 +8,7 @@ Whether you are writing a module or a bot, you'll need to add my repository:
 // build.gradle.kts, settings.gradle.kts, wherever you define your repositories,
 // add this declaration:
 maven {
-    url = uri("https://repo.lizainslie.dev/repository/maven-public/")
+    url = uri("https://repo.yuri.capital/repository/maven-public/")
 }
 ```
 
@@ -48,6 +48,6 @@ dependencies {
 ## Legal
 Moeka is released under the permissive [MIT License](LICENSE).
 
-[pito_source]: https://git.lizainslie.dev/crackcafe/pitohui
-[moeka_releases]: https://repo.lizainslie.dev/#browse/browse:maven-releases:dev%2Flizainslie%2Fmoeka
-[moeka_example_module]: https://git.lizainslie.dev/crackcafe/moeka-example-module
+[pito_source]: https://git.yuri.capital/crackcafe/pitohui
+[moeka_releases]: https://repo.yuri.capital/#browse/browse:maven-releases:dev%2Flizainslie%2Fmoeka
+[moeka_example_module]: https://git.yuri.capital/crackcafe/moeka-example-module

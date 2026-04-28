@@ -27,14 +27,14 @@ dependencies {
 publishing {
     repositories {
         maven {
-            name = "lizAinslie"
+            name = "yuriCapital"
 
             url =
                 uri(
                     if (version.toString().endsWith("SNAPSHOT")) {
-                        "https://repo.lizainslie.dev/repository/maven-snapshots/"
+                        "https://repo.yuri.capital/repository/maven-snapshots/"
                     } else {
-                        "https://repo.lizainslie.dev/repository/maven-releases/"
+                        "https://repo.yuri.capital/repository/maven-releases/"
                     },
                 )
 
@@ -49,7 +49,7 @@ publishing {
             name.set("Pitohui Core")
             description.set("Core functionality for Moeka, a multi-platform bot framework written in Kotlin")
             inceptionYear.set("2025")
-            url.set("https://git.lizainslie.dev/crackcafe/moeka/")
+            url.set("https://git.yuri.capital/crackcafe/moeka/")
             licenses {
                 license {
                     name.set("The MIT License (MIT)")
@@ -61,13 +61,13 @@ publishing {
                 developer {
                     id.set("mey")
                     name.set("Mey Ainslie")
-                    url.set("https://git.lizainslie.dev/mey/")
+                    url.set("https://git.yuri.capital/mey/")
                 }
             }
             scm {
-                url.set("https://git.lizainslie.dev/crackcafe/moeka/")
-                connection.set("scm:git:git://git.lizainslie.dev/crackcafe/moeka.git")
-                developerConnection.set("scm:git:ssh://git@git.lizainslie.dev/crackcafe/moeka.git")
+                url.set("https://git.yuri.capital/crackcafe/moeka/")
+                connection.set("scm:git:git://git.yuri.capital/crackcafe/moeka.git")
+                developerConnection.set("scm:git:ssh://git@git.yuri.capital/crackcafe/moeka.git")
             }
         }
     }
