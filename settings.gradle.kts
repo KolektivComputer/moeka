@@ -3,10 +3,10 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         maven {
-            url = uri("https://repo.lizainslie.dev/repository/maven-public/")
+            url = uri("https://repo.yuri.capital/repository/maven-public/")
         }
 //        maven {
-//            url = uri("https://repo.lizainslie.dev/repository/maven-snapshots/")
+//            url = uri("https://repo.yuri.capital/repository/maven-snapshots/")
 //        }
     }
 }
