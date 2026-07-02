@@ -4,7 +4,9 @@ import dev.lizainslie.moeka.core.commands.Commands
 import dev.lizainslie.moeka.core.config.Configs
 import dev.lizainslie.moeka.core.data.DbContext
 import dev.lizainslie.moeka.core.data.tables.DeveloperOptionsTable
+import dev.lizainslie.moeka.core.data.tables.ModuleCommunitySettingsTable
 import dev.lizainslie.moeka.core.data.tables.ModuleSwitchTable
+import dev.lizainslie.moeka.core.data.tables.ModuleVersionTable
 import dev.lizainslie.moeka.core.fs.BotFS
 import dev.lizainslie.moeka.core.logging.Logging
 import dev.lizainslie.moeka.core.manual.ManualRegistry
@@ -31,8 +33,10 @@ class Bot(
         Logging.init()
 
         DbContext.connect()
+        DbContext.tables += ModuleVersionTable
         DbContext.tables += ModuleSwitchTable
         DbContext.tables += DeveloperOptionsTable
+        DbContext.tables += ModuleCommunitySettingsTable
         DbContext.migrate()
     }
 

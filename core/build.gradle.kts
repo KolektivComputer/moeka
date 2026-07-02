@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okio)
     implementation(libs.slf4jApi)
+    implementation(libs.semver)
 
     testImplementation(kotlin("test"))
 }
@@ -27,7 +28,7 @@ dependencies {
 publishing {
     repositories {
         maven {
-            name = "lizAinslie"
+            name = "yuriCapital"
 
             url =
                 uri(

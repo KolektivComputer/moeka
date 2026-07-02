@@ -10,6 +10,10 @@ import dev.lizainslie.moeka.core.fs.ModuleTemp
 import dev.lizainslie.moeka.core.fs.ModuleTempContext
 import dev.lizainslie.moeka.core.manual.Manual
 import dev.lizainslie.moeka.core.manual.ManualProvider
+import dev.lizainslie.moeka.core.modules.settings.resolver.ModuleCommunitySettingsHolder
+import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
+import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinitionDsl
+import dev.lizainslie.moeka.core.modules.settings.schema.defineSettings
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.PlatformKey
@@ -35,6 +39,23 @@ abstract class AbstractModule(
         )
     protected lateinit var bot: Bot
     protected val log: Logger = LoggerFactory.getLogger(this::class.java)
+
+    protected var communitySettingsDefinitions: List<SettingDefinition<*>>? = null
+
+    val communitySettings by lazy {
+        ModuleCommunitySettingsHolder(name, communitySettingsDefinitions ?: emptyList())
+    }
+
+    fun defineCommunitySettings(block: SettingDefinitionDsl.() -> Unit) {
+        communitySettingsDefinitions = defineSettings(block)
+    }
+
+    lateinit var manifest: ModuleManifest
+        private set
+
+    fun loadManifest(moduleManifest: ModuleManifest) {
+        manifest = moduleManifest
+    }
 
     open fun onLoad() {}
 

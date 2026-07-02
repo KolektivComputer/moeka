@@ -3,12 +3,14 @@ package dev.lizainslie.moeka.core.modules
 
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.data.DbContext
+import dev.lizainslie.moeka.core.data.entities.ModuleVersion
 import dev.lizainslie.moeka.core.fs.BotFS
 import dev.lizainslie.moeka.core.logging.logModule
 import dev.lizainslie.moeka.core.logging.suspendLogModule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -27,6 +29,27 @@ class ModuleRegistry(
             if (loadedModules.any { it.name == module.name }) {
                 log.warn("Module with name '${module.name}' is already loaded! Skipping.")
                 return@logModule
+            }
+
+            val currentVersion = module.instance.manifest.version
+            val moduleVersionFromDb = transaction { ModuleVersion.getVersion(module.name) }
+
+            fun updateVersionInDatabase() {
+                transaction {
+                    ModuleVersion.upsert(module.name, currentVersion)
+                }
+            }
+
+            if (moduleVersionFromDb != null) {
+                if (currentVersion != moduleVersionFromDb) {
+                    if (currentVersion > moduleVersionFromDb) {
+                        log.info("Module '${module.name}' has been updated from version $moduleVersionFromDb to $currentVersion.")
+                        // todo: migrate settings as necessary
+                        updateVersionInDatabase()
+                    }
+
+                    updateVersionInDatabase()
+                }
             }
 
             log.info("Running migrations for module '${module.name}'...")
@@ -76,15 +99,17 @@ class ModuleRegistry(
                         return@withContext
                     }
 
-            val descriptor =
+            val manifest =
                 Json.decodeFromString<ModuleManifest>(
                     stream.reader().readText(),
                 )
 
-            log.debug("Successfully read manifest. Module main class: ${descriptor.mainClass}")
+            log.debug("Successfully read manifest. Module main class: ${manifest.mainClass}")
 
-            val cls = cl.loadClass(descriptor.mainClass)
+            val cls = cl.loadClass(manifest.mainClass)
             val instance = cls.getDeclaredField("INSTANCE").get(null) as AbstractModule
+
+            instance.loadManifest(manifest)
 
             log.debug("Module class loaded, name: '${instance.name}'")
 

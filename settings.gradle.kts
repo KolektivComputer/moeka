@@ -5,9 +5,6 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://repo.yuri.capital/repository/maven-public/")
         }
-//        maven {
-//            url = uri("https://repo.yuri.capital/repository/maven-snapshots/")
-//        }
     }
 }
 

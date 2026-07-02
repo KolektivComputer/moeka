@@ -28,7 +28,7 @@ dependencies {
 publishing {
     repositories {
         maven {
-            name = "lizAinslie"
+            name = "yuriCapital"
 
             url =
                 uri(
