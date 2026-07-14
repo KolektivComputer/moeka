@@ -10,7 +10,8 @@ import dev.lizainslie.moeka.core.fs.ModuleTemp
 import dev.lizainslie.moeka.core.fs.ModuleTempContext
 import dev.lizainslie.moeka.core.manual.Manual
 import dev.lizainslie.moeka.core.manual.ManualProvider
-import dev.lizainslie.moeka.core.modules.settings.resolver.ModuleCommunitySettingsHolder
+import dev.lizainslie.moeka.core.modules.settings.ModuleCommunitySettingsMap
+import dev.lizainslie.moeka.core.modules.settings.holder.ModuleCommunitySettingsHolder
 import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
 import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinitionDsl
 import dev.lizainslie.moeka.core.modules.settings.schema.defineSettings
@@ -43,7 +44,7 @@ abstract class AbstractModule(
     protected var communitySettingsDefinitions: List<SettingDefinition<*>>? = null
 
     val communitySettings by lazy {
-        ModuleCommunitySettingsHolder(name, communitySettingsDefinitions ?: emptyList())
+        ModuleCommunitySettingsMap(name, communitySettingsDefinitions ?: emptyList())
     }
 
     fun defineCommunitySettings(block: SettingDefinitionDsl.() -> Unit) {

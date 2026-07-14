@@ -1,4 +1,4 @@
-package dev.lizainslie.moeka.core.modules.settings.resolver
+package dev.lizainslie.moeka.core.modules.settings.holder
 
 import dev.lizainslie.moeka.core.data.entities.ModuleCommunitySetting
 import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
@@ -7,15 +7,18 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 class ModuleCommunitySettingsHolder(
     val moduleName: String,
+    val communityId: PlatformId,
     definitions: List<SettingDefinition<*>>
-) : SettingsHolder(definitions) {
-    inline fun <reified TSettingValue : Any> getSetting(communityId: PlatformId, key: String): TSettingValue? {
+) : AbstractSettingsHolder(definitions) {
+    inline fun <reified TSettingValue : Any> getSetting(key: String): TSettingValue? {
         val definition = getDefinition<TSettingValue>(key)
         val setting = transaction { ModuleCommunitySetting.find(moduleName, communityId, key) }
         return setting?.getValue(definition) ?: definition.defaultValue
     }
 
-    inline fun <reified TSettingValue : Any> getSettingRequired(communityId: PlatformId, key: String): TSettingValue {
+    inline operator fun <reified TSettingValue : Any> get(key: String) = getSetting<TSettingValue>(key)
+
+    inline fun <reified TSettingValue : Any> getSettingRequired(key: String): TSettingValue {
         val definition = getDefinition<TSettingValue>(key)
         val setting = transaction { ModuleCommunitySetting.find(moduleName, communityId, key) }
 
@@ -24,7 +27,7 @@ class ModuleCommunitySettingsHolder(
             ?: throw IllegalStateException("Required setting '$key' for module '$moduleName' in community '$communityId' is not set and has no default value.")
     }
 
-    inline fun <reified TSettingValue: Any> setSetting(communityId: PlatformId, key: String, value: TSettingValue) {
+    inline fun <reified TSettingValue: Any> setSetting(key: String, value: TSettingValue?) {
         val definition = getDefinition<TSettingValue>(key)
         var setting = transaction { ModuleCommunitySetting.find(moduleName, communityId, key) }
 
@@ -33,5 +36,9 @@ class ModuleCommunitySettingsHolder(
         }
 
         transaction { setting.setValue(definition, value) }
+    }
+
+    inline operator fun <reified TSettingValue : Any> set(key: String, value: TSettingValue?) {
+        setSetting(key, value)
     }
 }

@@ -19,7 +19,7 @@ class ModuleCommunitySetting(id: EntityID<CompositeID>) : CompositeEntity(id) {
     inline fun <reified TSettingValue : Any> getValue(def: SettingDefinition<TSettingValue>) =
         settingValue?.let { def.type.deserialize(it) } ?: def.defaultValue
 
-    inline fun <reified TSettingValue : Any> setValue(def: SettingDefinition<TSettingValue>, value: TSettingValue) {
+    inline fun <reified TSettingValue : Any> setValue(def: SettingDefinition<TSettingValue>, value: TSettingValue?) {
         settingValue = def.type.serialize(value)
     }
 

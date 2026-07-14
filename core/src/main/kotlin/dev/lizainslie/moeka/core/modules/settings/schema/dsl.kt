@@ -2,6 +2,7 @@
 
 package dev.lizainslie.moeka.core.modules.settings.schema
 
+import java.awt.Color
 import java.util.EnumSet
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -54,7 +55,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: String? = null,
     ) = setting(key, SettingType.StringSettingType, displayName, description, optional, defaultValue)
 
@@ -62,7 +63,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: Boolean? = null,
     ) = setting(key, SettingType.BooleanSettingType, displayName, description, optional, defaultValue)
 
@@ -70,7 +71,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: Int? = null,
     ) = setting(key, SettingType.IntegerSettingType, displayName, description, optional, defaultValue)
 
@@ -78,7 +79,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: UInt? = null,
     ) = setting(key, SettingType.UnsignedIntegerSettingType, displayName, description, optional, defaultValue)
 
@@ -86,7 +87,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: Long? = null
     ) = setting(key, SettingType.LongSettingType, displayName, description, optional, defaultValue)
 
@@ -94,7 +95,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: ULong? = null
     ) = setting(key, SettingType.UnsignedLongSettingType, displayName, description, optional, defaultValue)
 
@@ -102,7 +103,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: Float? = null,
     ) = setting(key, SettingType.FloatSettingType, displayName, description, optional, defaultValue)
 
@@ -110,7 +111,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: Double? = null,
     ) = setting(key, SettingType.DoubleSettingType, displayName, description, optional, defaultValue)
 
@@ -118,7 +119,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: Duration? = null,
     ) = setting(key, SettingType.DurationSettingType, displayName, description, optional, defaultValue)
 
@@ -126,7 +127,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: T? = null,
         enumClass: KClass<T>,
         enumConstants: EnumSet<T>
@@ -143,7 +144,7 @@ class SettingDefinitionDsl {
         key: String,
         displayName: String,
         description: String,
-        optional: Boolean = false,
+        optional: Boolean = true,
         defaultValue: T? = null,
     ) = enum(
         key = key,
@@ -153,5 +154,20 @@ class SettingDefinitionDsl {
         defaultValue = defaultValue,
         enumClass = T::class,
         enumConstants = EnumSet.allOf(T::class.java)
+    )
+
+    fun color(
+        key: String,
+        displayName: String,
+        description: String,
+        optional: Boolean = true,
+        defaultValue: Color? = null,
+    ) = setting(
+        key,
+        SettingType.ColorSettingType,
+        displayName,
+        description,
+        optional,
+        defaultValue
     )
 }

@@ -1,8 +1,8 @@
-package dev.lizainslie.moeka.core.modules.settings.resolver
+package dev.lizainslie.moeka.core.modules.settings.holder
 
 import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
 
-abstract class SettingsHolder(
+abstract class AbstractSettingsHolder(
     val definitions: List<SettingDefinition<*>>
 ) {
     constructor(vararg definitions: SettingDefinition<*>) : this(definitions.toList())
