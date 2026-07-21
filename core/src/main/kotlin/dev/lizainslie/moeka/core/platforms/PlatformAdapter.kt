@@ -5,7 +5,7 @@ import dev.lizainslie.moeka.core.commands.PlatformCommandConfig
 import dev.lizainslie.moeka.core.commands.RootCommand
 import dev.lizainslie.moeka.core.commands.argument.PlatformArgumentParseFn
 import dev.lizainslie.moeka.core.logging.suspendLogPlatform
-import dev.lizainslie.moeka.core.plugins.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.types.AbstractPlugin
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

@@ -10,6 +10,8 @@ group = rootProject.group
 version = rootProject.version
 
 dependencies {
+    implementation(kotlin("reflect"))
+
     implementation(libs.bundles.database)
 
     implementation(platform(libs.koin.bom))

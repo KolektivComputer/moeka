@@ -1,6 +1,6 @@
 package dev.lizainslie.moeka.core.data
 
-import dev.lizainslie.moeka.core.config.Configs
+import dev.lizainslie.moeka.core.config.ConfigService
 import dev.lizainslie.moeka.core.logging.logTag
 import org.jetbrains.exposed.v1.core.Table
 import org.jetbrains.exposed.v1.jdbc.Database
@@ -10,7 +10,7 @@ import org.jetbrains.exposed.v1.migration.jdbc.MigrationUtils
 import org.slf4j.LoggerFactory
 
 object DbContext {
-    val config by Configs.config<DatabaseConfig>()
+    val config by ConfigService.config<DatabaseConfig>()
 
     val tables = mutableSetOf<Table>()
 

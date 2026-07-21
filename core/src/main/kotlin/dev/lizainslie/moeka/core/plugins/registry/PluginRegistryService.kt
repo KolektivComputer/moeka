@@ -1,28 +1,37 @@
-package dev.lizainslie.moeka.core.plugins
-// last incident: 2026/01/02
+package dev.lizainslie.moeka.core.plugins.registry
 
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.data.DbContext
 import dev.lizainslie.moeka.core.data.entities.PluginVersion
-import dev.lizainslie.moeka.core.fs.BotFS
+import dev.lizainslie.moeka.core.fs.BotFs
 import dev.lizainslie.moeka.core.logging.logPlugin
 import dev.lizainslie.moeka.core.logging.suspendLogPlugin
+import dev.lizainslie.moeka.core.plugins.types.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.types.PluginManifest
+import dev.lizainslie.moeka.core.plugins.PluginManifestService
+import dev.lizainslie.moeka.core.plugins.PluginModuleProvider
+import dev.lizainslie.moeka.core.plugins.PluginScopeArchetype
+import dev.lizainslie.moeka.core.plugins.types.PluginSource
+import dev.lizainslie.moeka.core.plugins.sortByDependencies
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.context.unloadKoinModules
+import org.koin.core.parameter.parametersOf
 import org.slf4j.LoggerFactory
 import java.io.File
 
-class PluginRegistry(
-    private val bot: Bot,
-) {
+class PluginRegistryService : KoinComponent {
+    private val bot: Bot by inject()
+    private val botFs: BotFs by inject()
+
+    private val manifests by inject<PluginManifestService>()
+
     val loadedPlugins = mutableListOf<LoadedPlugin>()
     private val log = LoggerFactory.getLogger(javaClass)
-
-    init {
-        instance = this
-    }
 
     fun load(plugin: LoadedPlugin) {
         logPlugin(plugin.instance) {
@@ -62,17 +71,6 @@ class PluginRegistry(
         }
     }
 
-    fun loadBundledModule(module: AbstractPlugin) {
-        load(
-            LoadedPlugin(
-                name = module.name,
-                instance = module,
-                source = PluginSource.INTERNAL,
-                classLoader = null,
-            ),
-        )
-    }
-
     suspend fun loadExternalPlugin(file: File) {
         withContext(Dispatchers.IO) {
             log.info("Loading external plugin from ${file.absolutePath}...")
@@ -103,22 +101,36 @@ class PluginRegistry(
                 Json.decodeFromString<PluginManifest>(
                     stream.reader().readText(),
                 )
+            log.debug("Successfully read manifest. Module provider class: ${manifest.pluginModuleProviderClass}")
 
-            log.debug("Successfully read manifest. Plugin main class: ${manifest.mainClass}")
+            manifests[manifest.name] = manifest
 
-            val cls = cl.loadClass(manifest.mainClass)
-            val instance = cls.getDeclaredField("INSTANCE").get(null) as AbstractPlugin
+            val moduleProviderClass = cl.loadClass(manifest.pluginModuleProviderClass)
+            val moduleProvider = moduleProviderClass.getDeclaredField("INSTANCE").get(null) as PluginModuleProvider
 
-            instance.loadManifest(manifest)
+            val pluginClass: Class<out AbstractPlugin> = cl.loadPluginClass(manifest.pluginClass).getOrElse {
+                log.warn("Failed to load plugin class: ${manifest.pluginModuleProviderClass}")
+                return@withContext
+            }
 
-            log.debug("Plugin class loaded, name: '${instance.name}'")
+            val module = moduleProvider.createModule()
+            val scope = getKoin().createScope(
+                scopeId = "pluginScope_${manifest.name}",
+                qualifier = PluginScopeArchetype
+            )
+
+            val pluginInstance = scope.get<AbstractPlugin>(pluginClass.kotlin) { parametersOf(scope) }
+
+            log.debug("Plugin class loaded, name: '${manifest.name}'")
 
             load(
                 LoadedPlugin(
-                    name = instance.name,
-                    instance = instance,
+                    name = manifest.name,
+                    instance = pluginInstance,
+                    module = module,
                     source = PluginSource.EXTERNAL,
                     classLoader = cl,
+                    scope = scope,
                 ),
             )
         }
@@ -139,9 +151,9 @@ class PluginRegistry(
         suspendLogPlugin(plugin.instance) {
             log.info("Initializing module '${plugin.name}'.")
 
-            plugin.instance.onInit(bot)
+            plugin.instance.onInit()
 
-            bot.commands.registerModuleCommands(plugin.instance)
+            bot.commands.registerPluginCommands(plugin.instance)
         }
     }
 
@@ -161,7 +173,11 @@ class PluginRegistry(
 
             plugin.instance.onUnload()
 
-            bot.commands.unregisterModuleCommands(plugin.instance)
+            bot.commands.unregisterPluginCommands(plugin.instance)
+
+            plugin.scope.close()
+            unloadKoinModules(plugin.module)
+
             loadedPlugins.remove(plugin)
         }
     }
@@ -200,7 +216,7 @@ class PluginRegistry(
             unload(plugin)
 
             val jar =
-                BotFS.pluginsDir.resolve("${plugin.name}.jar").also {
+                botFs.pluginsDir.resolve("${plugin.name}.jar").also {
                     if (!it.exists()) {
                         run {
                             log.error("Plugin '$name' is missing its JAR file, cannot reload.")
@@ -226,16 +242,12 @@ class PluginRegistry(
         }
     }
 
-    suspend fun loadJarPlugins(dir: File = BotFS.pluginsDir) {
+    suspend fun loadJarPlugins(dir: File = botFs.pluginsDir) {
         log.info("Loading JAR plugins from ${dir.absolutePath}")
         withContext(Dispatchers.IO) {
             dir.listFiles().filter { it.isFile && it.extension == "jar" }.forEach {
                 loadExternalPlugin(it)
             }
         }
-    }
-
-    companion object {
-        lateinit var instance: PluginRegistry
     }
 }

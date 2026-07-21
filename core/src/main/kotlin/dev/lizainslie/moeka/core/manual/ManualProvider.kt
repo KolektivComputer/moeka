@@ -1,6 +1,8 @@
 package dev.lizainslie.moeka.core.manual
 
-interface ManualProvider {
+import org.koin.core.component.KoinComponent
+
+interface ManualProvider : KoinComponent {
     fun registerManPage(man: Manual)
 
     fun registerManPage(

@@ -8,18 +8,16 @@ import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.embed
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArguments
-import dev.lizainslie.moeka.core.plugins.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.types.AbstractPlugin
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.platforms.discord.entities.DiscordSlashCommandResponse
-import dev.lizainslie.moeka.platforms.discord.extensions.platform
+import dev.lizainslie.moeka.platforms.discord.extensions.kord.platform
 import kotlinx.datetime.Clock
 
 class DiscordSlashCommandContext(
-    bot: Bot,
-    module: AbstractPlugin,
     arguments: ResolvedArguments,
     val interaction: ChatInputCommandInteraction,
-) : DiscordCommandContext(bot, module, arguments) {
+) : DiscordCommandContext(arguments) {
     override suspend fun respond(text: String): DiscordSlashCommandResponse =
         (
             response?.createFollowup(text) ?: let {

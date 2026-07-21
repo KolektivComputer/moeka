@@ -7,17 +7,15 @@ import dev.kord.rest.builder.message.EmbedBuilder
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.CommandContext
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArguments
-import dev.lizainslie.moeka.core.plugins.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.types.AbstractPlugin
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.platforms.discord.Discord
 import dev.lizainslie.moeka.platforms.discord.entities.DiscordResponse
-import dev.lizainslie.moeka.platforms.discord.extensions.snowflake
+import dev.lizainslie.moeka.platforms.discord.extensions.moeka.snowflake
 
 abstract class DiscordCommandContext(
-    bot: Bot,
-    module: AbstractPlugin,
     arguments: ResolvedArguments,
-) : CommandContext(bot, module, Discord, arguments) {
+) : CommandContext(Discord, arguments) {
     abstract val channelId: PlatformId
     abstract val guildId: PlatformId?
     abstract val isInGuild: Boolean

@@ -1,34 +1,38 @@
 package dev.lizainslie.moeka.core
 
-import dev.lizainslie.moeka.core.commands.Commands
-import dev.lizainslie.moeka.core.config.Configs
+import dev.lizainslie.moeka.core.commands.registration.CommandRegistrationService
+import dev.lizainslie.moeka.core.config.ConfigService
 import dev.lizainslie.moeka.core.data.DbContext
 import dev.lizainslie.moeka.core.data.tables.DeveloperOptionsTable
 import dev.lizainslie.moeka.core.data.tables.PluginCommunitySettingsTable
 import dev.lizainslie.moeka.core.data.tables.ModuleSwitchTable
 import dev.lizainslie.moeka.core.data.tables.PluginVersionTable
-import dev.lizainslie.moeka.core.fs.BotFS
+import dev.lizainslie.moeka.core.fs.BotFs
+import dev.lizainslie.moeka.core.fs.TempFs
 import dev.lizainslie.moeka.core.logging.Logging
-import dev.lizainslie.moeka.core.manual.ManualRegistry
-import dev.lizainslie.moeka.core.plugins.AbstractPlugin
-import dev.lizainslie.moeka.core.plugins.PluginRegistry
+import dev.lizainslie.moeka.core.manual.ManualRegistryService
+import dev.lizainslie.moeka.core.plugins.registry.PluginRegistryService
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class Bot(
-    vararg val baseModules: AbstractPlugin = emptyArray(),
-) {
-    val plugins = PluginRegistry(this)
-    val commands = Commands(this)
-    val manPages = ManualRegistry()
+) : KoinComponent {
+    val plugins by inject<PluginRegistryService>()
+    val commands by inject<CommandRegistrationService>()
+    val configs by inject<ConfigService>()
+    val manPages = ManualRegistryService()
+    val fs by inject<BotFs>()
+    val tempFs by inject<TempFs>()
 
     val platformAdapters = mutableListOf<AnyPlatformAdapter>()
 
     init {
         // generate the base folder structure if it doesn't exist
-        BotFS.generateBaseStructure()
+        fs.generateBaseStructure()
 
         // check to ensure that configs are valid
-        Configs.checkConfigs()
+        configs.checkConfigs()
 
         Logging.init()
 
@@ -40,11 +44,7 @@ class Bot(
         DbContext.migrate()
     }
 
-    suspend fun loadModules() {
-        baseModules.forEach {
-            plugins.loadBundledModule(it)
-        }
-
+    suspend fun loadPlugins() {
         plugins.loadJarPlugins()
     }
 
@@ -80,6 +80,6 @@ class Bot(
         }
 
         plugins.unloadAll()
-        BotFS.Temp.cleanup()
+        tempFs.cleanup()
     }
 }

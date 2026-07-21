@@ -1,4 +1,4 @@
-﻿package dev.lizainslie.moeka.platforms.discord.extensions
+﻿package dev.lizainslie.moeka.platforms.discord.extensions.jvm
 
 import dev.kord.common.Color
 

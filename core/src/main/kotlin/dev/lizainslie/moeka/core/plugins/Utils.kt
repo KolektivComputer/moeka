@@ -1,5 +1,7 @@
 package dev.lizainslie.moeka.core.plugins
 
+import dev.lizainslie.moeka.core.plugins.registry.LoadedPlugin
+
 // Track visit state for topo sort
 internal enum class Mark { TEMP, PERM }
 

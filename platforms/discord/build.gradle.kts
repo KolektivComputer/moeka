@@ -13,6 +13,9 @@ dependencies {
 
     implementation(libs.bundles.database)
 
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
+
     implementation(libs.kord.core)
     implementation(libs.korelibs.validate.core)
     implementation(libs.kotlinx.serialization.json)

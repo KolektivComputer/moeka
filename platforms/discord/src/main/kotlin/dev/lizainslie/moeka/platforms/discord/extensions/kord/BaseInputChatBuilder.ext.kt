@@ -1,4 +1,4 @@
-package dev.lizainslie.moeka.platforms.discord.extensions
+package dev.lizainslie.moeka.platforms.discord.extensions.kord
 
 import dev.kord.rest.builder.interaction.BaseInputChatBuilder
 import dev.kord.rest.builder.interaction.RootInputChatBuilder

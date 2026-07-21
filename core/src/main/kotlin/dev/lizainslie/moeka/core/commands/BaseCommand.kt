@@ -4,6 +4,7 @@ import dev.lizainslie.moeka.core.commands.argument.ArgumentDescriptor
 import dev.lizainslie.moeka.core.manual.Manual
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformKey
+import kotlin.reflect.KClass
 
 abstract class BaseCommand(
     val name: String,
@@ -13,7 +14,7 @@ abstract class BaseCommand(
 
     open val arguments: List<ArgumentDescriptor<*>> = emptyList()
 
-    abstract suspend fun handle(context: CommandContext)
+    abstract val handlers: Map<KClass<*>, CommandHandler<*>>
 
     fun supportsPlatform(key: PlatformKey) = rootCommand.platforms.containsKey(key)
 

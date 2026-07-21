@@ -1,11 +1,17 @@
 package dev.lizainslie.moeka.core.fs
 
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 
 class PluginTemp(
-    val directory: File,
-) {
+    pluginName: String,
+) : KoinComponent {
     val contexts = mutableListOf<PluginTempContext>()
+
+    val tempFs by inject<TempFs>()
+
+    val directory: File = tempFs.plugins.resolve(pluginName)
 
     init {
         if (directory.exists() && !directory.isDirectory) {

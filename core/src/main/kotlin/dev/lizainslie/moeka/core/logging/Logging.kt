@@ -1,9 +1,9 @@
 package dev.lizainslie.moeka.core.logging
 
-import dev.lizainslie.moeka.core.config.Configs
+import dev.lizainslie.moeka.core.config.ConfigService
 
 object Logging {
-    val config by Configs.config<LoggingConfig>()
+    val config by ConfigService.config<LoggingConfig>()
 
     fun init() {
         syncLevel(config.level)

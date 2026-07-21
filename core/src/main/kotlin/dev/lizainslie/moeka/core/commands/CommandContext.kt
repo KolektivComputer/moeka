@@ -4,21 +4,27 @@ import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.argument.ArgumentDescriptor
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArguments
 import dev.lizainslie.moeka.core.data.entities.DeveloperOptions
-import dev.lizainslie.moeka.core.plugins.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.types.AbstractPlugin
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.entities.PlatformResponse
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.scope.Scope
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KProperty
 
 abstract class CommandContext(
-    val bot: Bot,
-    val plugin: AbstractPlugin,
     val platform: AnyPlatformAdapter,
     val args: ResolvedArguments,
-) {
+    pluginScope: Scope? = null,
+) : KoinComponent {
+    val bot by inject<Bot>()
+
+    val plugin: AbstractPlugin? = pluginScope?.get<AbstractPlugin>()
+
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
     open var response: PlatformResponse? = null
 

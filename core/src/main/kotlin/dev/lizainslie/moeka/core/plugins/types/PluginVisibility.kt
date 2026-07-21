@@ -1,4 +1,4 @@
-package dev.lizainslie.moeka.core.plugins
+package dev.lizainslie.moeka.core.plugins.types
 
 /**
  * ModuleVisibility represents the visibility level of a module within the bot.

@@ -1,9 +1,11 @@
 package dev.lizainslie.moeka.core.config
 
-import dev.lizainslie.moeka.core.fs.BotFS
+import dev.lizainslie.moeka.core.fs.BotFs
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.slf4j.LoggerFactory
 import java.io.File
 import kotlin.reflect.KClass
@@ -13,8 +15,10 @@ class Config<TConfig : ConfigBase>(
     val key: String,
     val serializer: KSerializer<TConfig>,
     klass: KClass<out TConfig>,
-    val moduleName: String? = null,
-) {
+    val pluginName: String? = null,
+) : KoinComponent {
+    private val botFs: BotFs by inject()
+
     lateinit var currentValue: TConfig
         private set
 
@@ -37,16 +41,16 @@ class Config<TConfig : ConfigBase>(
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    private val annotation = Configs.getConfigFileAnnotation(klass)
+    private val annotation = ConfigFile.get(klass)
 
     private val file: File =
         when (annotation.type) {
             ConfigType.PLUGIN -> {
-                if (moduleName == null) throw RuntimeException("Error loading module config ${klass.simpleName}: moduleName is null")
-                BotFS.moduleConfigDir.resolve(moduleName).resolve(annotation.name)
+                if (pluginName == null) throw RuntimeException("Error loading module config ${klass.simpleName}: moduleName is null")
+                botFs.pluginConfigDir.resolve(pluginName).resolve(annotation.name)
             }
-            ConfigType.ROOT -> BotFS.configDir.resolve(annotation.name)
-            ConfigType.PLATFORM -> BotFS.platformConfigDir.resolve(annotation.name)
+            ConfigType.ROOT -> botFs.configDir.resolve(annotation.name)
+            ConfigType.PLATFORM -> botFs.platformConfigDir.resolve(annotation.name)
         }
 
     init {
@@ -83,5 +87,5 @@ inline fun <reified TConfig : ConfigBase> Config(
     key = key,
     serializer = Json.serializersModule.serializer<TConfig>(),
     klass = TConfig::class,
-    moduleName = moduleName,
+    pluginName = moduleName,
 )

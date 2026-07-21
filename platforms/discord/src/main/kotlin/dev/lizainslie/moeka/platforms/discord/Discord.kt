@@ -22,30 +22,37 @@ import dev.lizainslie.moeka.core.commands.argument.ArgumentDescriptor
 import dev.lizainslie.moeka.core.commands.argument.PlatformArgumentParseFn
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArgument
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArguments
-import dev.lizainslie.moeka.core.config.Configs
+import dev.lizainslie.moeka.core.config.ConfigService
 import dev.lizainslie.moeka.core.logging.suspendLogPlugin
-import dev.lizainslie.moeka.core.plugins.AbstractPlugin
-import dev.lizainslie.moeka.core.plugins.PluginVisibility
+import dev.lizainslie.moeka.core.plugins.types.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.types.PluginVisibility
 import dev.lizainslie.moeka.core.platforms.PlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.PlatformKey
 import cloud.kore.lib.validate.ValidationResult
+import dev.lizainslie.moeka.core.commands.dispatch.CommandDispatchService
 import dev.lizainslie.moeka.platforms.discord.commands.DiscordCommandConfig
+import dev.lizainslie.moeka.platforms.discord.commands.DiscordCommandContext
 import dev.lizainslie.moeka.platforms.discord.commands.DiscordSlashCommandContext
 import dev.lizainslie.moeka.platforms.discord.config.DiscordPlatformConfig
-import dev.lizainslie.moeka.platforms.discord.extensions.arguments
-import dev.lizainslie.moeka.platforms.discord.extensions.platform
-import dev.lizainslie.moeka.platforms.discord.extensions.snowflake
-import dev.lizainslie.moeka.platforms.discord.extensions.subCommands
+import dev.lizainslie.moeka.platforms.discord.extensions.kord.arguments
+import dev.lizainslie.moeka.platforms.discord.extensions.kord.platform
+import dev.lizainslie.moeka.platforms.discord.extensions.moeka.snowflake
+import dev.lizainslie.moeka.platforms.discord.extensions.kord.subCommands
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import kotlin.collections.find
 
 object Discord : PlatformAdapter<DiscordCommandConfig>(
     key = PlatformKey("discord"),
     displayName = "Discord",
-) {
-    val config by Configs.config<DiscordPlatformConfig>()
+), KoinComponent {
+    val configService by inject<ConfigService>()
+    val config by configService.config<DiscordPlatformConfig>()
+
+    val commandDispatch by inject<CommandDispatchService>()
 
     lateinit var kord: Kord
 
@@ -454,11 +461,9 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
                     }
                 }
 
-                bot.commands.dispatchCommand(
+                commandDispatch.dispatchCommand<DiscordCommandContext>(
                     handlingCommand,
                     DiscordSlashCommandContext(
-                        bot = bot,
-                        module = registration.plugin,
                         arguments = ResolvedArguments(resolvedArguments),
                         interaction = interaction,
                     ),

@@ -3,7 +3,7 @@ package dev.lizainslie.moeka.core.fs
 import java.io.File
 import java.nio.file.Paths
 
-object BotFS {
+class BotFs {
     /**
      * The root bot directory
      */
@@ -18,7 +18,7 @@ object BotFS {
     val configDir = baseDir.resolve("config")
 
     val platformConfigDir = configDir.resolve("platforms")
-    val moduleConfigDir = configDir.resolve("plugins")
+    val pluginConfigDir = configDir.resolve("plugins")
 
     /**
      * The directory where hosts are expected to place modules
@@ -29,31 +29,11 @@ object BotFS {
         // create the config directory & its substructure if it doesn't exist
         if (!configDir.exists()) configDir.mkdirs()
         if (!platformConfigDir.exists()) platformConfigDir.mkdirs()
-        if (!moduleConfigDir.exists()) moduleConfigDir.mkdirs()
+        if (!pluginConfigDir.exists()) pluginConfigDir.mkdirs()
 
         // create the modules directory if it doesn't exist
         if (!pluginsDir.exists()) pluginsDir.mkdirs()
     }
 
-    object Temp {
-        /**
-         * The directory for temporary files
-         */
-        val dir: File =
-            File("${System.getProperty("java.io.tmpdir")}/pitohui")
-                .absoluteFile
-                .apply { if (!exists()) mkdirs() }
 
-        val plugins =
-            dir
-                .resolve("plugins")
-                .apply { if (!exists()) mkdirs() }
-
-        /**
-         * Cleans up all files in the temp directory
-         */
-        fun cleanup() {
-            dir.listFiles()?.forEach { it.deleteRecursively() }
-        }
-    }
 }

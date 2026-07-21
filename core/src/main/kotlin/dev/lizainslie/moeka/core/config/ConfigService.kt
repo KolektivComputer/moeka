@@ -1,33 +1,16 @@
 package dev.lizainslie.moeka.core.config
 
+import org.koin.core.component.KoinComponent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
-object Configs {
+class ConfigService : KoinComponent {
     val loadedConfigs = mutableListOf<Config<*>>()
 
     val log: Logger = LoggerFactory.getLogger(this::class.java)
 
-    fun <TConfig : ConfigBase> getConfigFileAnnotation(klass: KClass<out TConfig>): ConfigFile {
-        val annotations = klass.annotations.filterIsInstance<ConfigFile>()
-        if (annotations.size != 1) {
-            // todo: error.
-            throw RuntimeException("${klass.simpleName} must have exactly one ConfigFile annotation!")
-        }
-
-        val configFile = annotations.first()
-        log.debug(
-            "Found config file annotation: name='{}', key='{}', type='{}' for config class '{}'",
-            configFile.name,
-            configFile.key,
-            configFile.type,
-            klass.simpleName,
-        )
-        return configFile
-    }
-
-    fun <TConfig : ConfigBase> getConfigKey(klass: KClass<out TConfig>) = getConfigFileAnnotation(klass).key
+    fun <TConfig : ConfigBase> getConfigKey(klass: KClass<out TConfig>) = ConfigFile.get(klass).key
 
     inline fun <reified TConfig : ConfigBase> getConfigKey() = getConfigKey(TConfig::class)
 
@@ -45,13 +28,13 @@ object Configs {
     }
 
     @Suppress("UNCHECKED_CAST")
-    inline fun <reified TConfig : ConfigBase> pluginConfig(moduleName: String): Config<TConfig> {
+    inline fun <reified TConfig : ConfigBase> pluginConfig(pluginName: String): Config<TConfig> {
         val key = getConfigKey<TConfig>()
         if (loadedConfigs.any { it.key == key }) {
             return loadedConfigs.first { it.key == key } as Config<TConfig>
         } else {
-            log.debug("Registering new module config of type ${TConfig::class.simpleName} with key '$key' for module '$moduleName'")
-            val config = Config<TConfig>(key, moduleName)
+            log.debug("Registering new plugin config of type ${TConfig::class.simpleName} with key '$key' for plugin '$pluginName'")
+            val config = Config<TConfig>(key, pluginName)
             loadedConfigs += config
             return config
         }

@@ -1,4 +1,4 @@
-package dev.lizainslie.moeka.core.plugins
+package dev.lizainslie.moeka.core.plugins.types
 
 /**
  * ModuleSource represents the origin of a module, indicating whether it is

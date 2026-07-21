@@ -54,11 +54,11 @@ open class BaseCommandDsl(
     val name: String,
     val description: String,
 ) {
-    lateinit var handler: CommandHandler
+    val handlers = mutableMapOf<KClass<*>, CommandHandler<*>>()
     val arguments = mutableListOf<ArgumentDescriptor<*>>()
 
-    fun handle(block: CommandHandler) {
-        handler = block
+    inline fun <reified TContext : CommandContext> handle(noinline block: CommandHandler<TContext>) {
+        handlers[TContext::class] = block
     }
 
     inline fun <reified T : Any> argument(
@@ -109,16 +109,14 @@ class RootCommandDsl(
         val platforms = platforms
         val arguments = arguments
         val communityOnly = communityOnly
+        val handlers = handlers
 
         return object : RootCommand(name, description) {
             override val subCommands: List<SubCommand> = subCommands.map { it.buildSubCommand(this) }
             override val platforms: Map<PlatformKey, PlatformCommandConfig> = platforms
             override val arguments: List<ArgumentDescriptor<*>> = arguments
             override val communityOnly: Boolean = communityOnly
-
-            override suspend fun handle(context: CommandContext) {
-                handler(context)
-            }
+            override val handlers = handlers
         }
     }
 }
@@ -130,13 +128,11 @@ class SubCommandDsl(
 ) : BaseCommandDsl(name, description) {
     fun buildSubCommand(parent: BaseCommand): SubCommand {
         val arguments = arguments
+        val handlers = handlers
 
         return object : SubCommand(name, description, parent) {
             override val arguments: List<ArgumentDescriptor<*>> = arguments
-
-            override suspend fun handle(context: CommandContext) {
-                handler(context)
-            }
+            override val handlers = handlers
         }
     }
 }

@@ -1,6 +1,6 @@
 package dev.lizainslie.moeka.core.logging
 
-import dev.lizainslie.moeka.core.plugins.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.types.AbstractPlugin
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformKey
 import org.slf4j.MDC
@@ -26,22 +26,22 @@ fun <T> logTag(
 }
 
 suspend fun <T> suspendLogPlugin(
-    module: AbstractPlugin,
+    plugin: AbstractPlugin?,
     block: suspend () -> T,
 ): T {
-    MDC.put("plugin", module.name)
+    if (plugin != null) MDC.put("plugin", plugin.name)
     val result = block()
-    MDC.remove("plugin")
+    if (plugin != null) MDC.remove("plugin")
     return result
 }
 
 fun <T> logPlugin(
-    plugin: AbstractPlugin,
+    plugin: AbstractPlugin?,
     block: () -> T,
 ): T {
-    MDC.put("plugin", plugin.name)
+    if (plugin != null) MDC.put("plugin", plugin.name)
     val result = block()
-    MDC.remove("plugin")
+    if (plugin != null) MDC.remove("plugin")
     return result
 }
 
