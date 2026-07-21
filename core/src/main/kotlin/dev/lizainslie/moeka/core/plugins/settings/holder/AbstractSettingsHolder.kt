@@ -1,6 +1,6 @@
-package dev.lizainslie.moeka.core.modules.settings.holder
+package dev.lizainslie.moeka.core.plugins.settings.holder
 
-import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
+import dev.lizainslie.moeka.core.plugins.settings.schema.SettingDefinition
 
 abstract class AbstractSettingsHolder(
     val definitions: List<SettingDefinition<*>>

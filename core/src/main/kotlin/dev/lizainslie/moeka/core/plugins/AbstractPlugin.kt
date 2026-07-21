@@ -1,4 +1,4 @@
-package dev.lizainslie.moeka.core.modules
+package dev.lizainslie.moeka.core.plugins
 
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.RootCommand
@@ -6,15 +6,14 @@ import dev.lizainslie.moeka.core.config.ConfigBase
 import dev.lizainslie.moeka.core.config.Configs
 import dev.lizainslie.moeka.core.data.entities.ModuleSwitch
 import dev.lizainslie.moeka.core.fs.BotFS
-import dev.lizainslie.moeka.core.fs.ModuleTemp
-import dev.lizainslie.moeka.core.fs.ModuleTempContext
+import dev.lizainslie.moeka.core.fs.PluginTemp
+import dev.lizainslie.moeka.core.fs.PluginTempContext
 import dev.lizainslie.moeka.core.manual.Manual
 import dev.lizainslie.moeka.core.manual.ManualProvider
-import dev.lizainslie.moeka.core.modules.settings.ModuleCommunitySettingsMap
-import dev.lizainslie.moeka.core.modules.settings.holder.ModuleCommunitySettingsHolder
-import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
-import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinitionDsl
-import dev.lizainslie.moeka.core.modules.settings.schema.defineSettings
+import dev.lizainslie.moeka.core.plugins.settings.PluginCommunitySettingsMap
+import dev.lizainslie.moeka.core.plugins.settings.schema.SettingDefinition
+import dev.lizainslie.moeka.core.plugins.settings.schema.SettingDefinitionDsl
+import dev.lizainslie.moeka.core.plugins.settings.schema.defineSettings
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.PlatformKey
@@ -25,18 +24,18 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-abstract class AbstractModule(
+abstract class AbstractPlugin(
     val name: String,
     val optional: Boolean = true,
-    val visibility: ModuleVisibility = ModuleVisibility.PUBLIC,
+    val visibility: PluginVisibility = PluginVisibility.PUBLIC,
     val description: String = "No description provided",
     val commands: Set<RootCommand> = emptySet(),
     val tables: Set<Table> = emptySet(),
     val dependencies: Set<String> = emptySet(),
 ) : ManualProvider {
     val temp =
-        ModuleTemp(
-            BotFS.Temp.modules.resolve(name),
+        PluginTemp(
+            BotFS.Temp.plugins.resolve(name),
         )
     protected lateinit var bot: Bot
     protected val log: Logger = LoggerFactory.getLogger(this::class.java)
@@ -44,17 +43,17 @@ abstract class AbstractModule(
     protected var communitySettingsDefinitions: List<SettingDefinition<*>>? = null
 
     val communitySettings by lazy {
-        ModuleCommunitySettingsMap(name, communitySettingsDefinitions ?: emptyList())
+        PluginCommunitySettingsMap(name, communitySettingsDefinitions ?: emptyList())
     }
 
     fun defineCommunitySettings(block: SettingDefinitionDsl.() -> Unit) {
         communitySettingsDefinitions = defineSettings(block)
     }
 
-    lateinit var manifest: ModuleManifest
+    lateinit var manifest: PluginManifest
         private set
 
-    fun loadManifest(moduleManifest: ModuleManifest) {
+    fun loadManifest(moduleManifest: PluginManifest) {
         manifest = moduleManifest
     }
 
@@ -68,7 +67,7 @@ abstract class AbstractModule(
         this.bot = bot
     }
 
-    inline fun <reified TConfig : ConfigBase> config() = Configs.moduleConfig<TConfig>(this.name)
+    inline fun <reified TConfig : ConfigBase> config() = Configs.pluginConfig<TConfig>(this.name)
 
     open fun isEnabledForCommunity(communityId: PlatformId) =
         transaction {
@@ -85,14 +84,14 @@ abstract class AbstractModule(
             .firstOrNull { it.key == platform }
             ?.let { supportsPlatform(it) } ?: false
 
-    fun <T : Any> withTempContext(block: ModuleTempContext.() -> T): T {
+    fun <T : Any> withTempContext(block: PluginTempContext.() -> T): T {
         val context = temp.createContext()
         val result = context.block()
         temp.removeContext(context)
         return result
     }
 
-    suspend fun <T : Any> withTempContextSuspend(block: suspend ModuleTempContext.() -> T): T {
+    suspend fun <T : Any> withTempContextSuspend(block: suspend PluginTempContext.() -> T): T {
         val context = temp.createContext()
         val result = context.block()
         temp.removeContext(context)

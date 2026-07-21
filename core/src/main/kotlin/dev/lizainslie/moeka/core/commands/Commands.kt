@@ -3,11 +3,11 @@ package dev.lizainslie.moeka.core.commands
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.config.Configs
 import dev.lizainslie.moeka.core.data.entities.DeveloperOptions
-import dev.lizainslie.moeka.core.logging.suspendLogModule
+import dev.lizainslie.moeka.core.logging.suspendLogPlugin
 import dev.lizainslie.moeka.core.logging.suspendLogPlatform
 import dev.lizainslie.moeka.core.logging.suspendLogTag
-import dev.lizainslie.moeka.core.modules.AbstractModule
-import dev.lizainslie.moeka.core.modules.ModuleVisibility
+import dev.lizainslie.moeka.core.plugins.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.PluginVisibility
 import dev.lizainslie.moeka.core.platforms.UnsupportedPlatformException
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 import org.slf4j.LoggerFactory
@@ -21,9 +21,9 @@ class Commands(
 
     suspend fun registerCommand(
         command: RootCommand,
-        module: AbstractModule,
+        module: AbstractPlugin,
     ) {
-        suspendLogModule(module) {
+        suspendLogPlugin(module) {
             log.info("Registering command: '${command.name}'.")
             commands.add(CommandRegistration(command, module))
 
@@ -39,17 +39,17 @@ class Commands(
         }
     }
 
-    suspend fun unregisterModuleCommands(module: AbstractModule) {
-        suspendLogModule(module) {
-            log.info("Unregistering commands for module '${module.name}'.")
-            val toRemove = commands.filter { it.module == module }
+    suspend fun unregisterPluginCommands(plugin: AbstractPlugin) {
+        suspendLogPlugin(plugin) {
+            log.info("Unregistering commands for module '${plugin.name}'.")
+            val toRemove = commands.filter { it.plugin == plugin }
             commands.removeAll(toRemove)
 
             bot.eachPlatform {
                 suspendLogPlatform(it) {
                     for (reg in toRemove) {
-                        if (module.supportsPlatform(it) && reg.command.supportsPlatform(it)) {
-                            it.unregisterCommand(reg.command, module)
+                        if (plugin.supportsPlatform(it) && reg.command.supportsPlatform(it)) {
+                            it.unregisterCommand(reg.command, plugin)
                         }
                     }
                 }
@@ -57,11 +57,11 @@ class Commands(
         }
     }
 
-    suspend fun registerModuleCommands(module: AbstractModule) {
-        suspendLogModule(module) {
-            log.info("Registering commands for module '${module.name}'.")
-            for (command in module.commands) {
-                registerCommand(command, module)
+    suspend fun registerPluginCommands(plugin: AbstractPlugin) {
+        suspendLogPlugin(plugin) {
+            log.info("Registering commands for plugin '${plugin.name}'.")
+            for (command in plugin.commands) {
+                registerCommand(command, plugin)
             }
         }
     }
@@ -97,14 +97,14 @@ class Commands(
         handlingCommand: BaseCommand,
         context: CommandContext,
     ) {
-        suspendLogModule(context.module) {
+        suspendLogPlugin(context.plugin) {
             suspendLogPlatform(context.platform) {
-                if (!context.module.supportsPlatform(context.platform)) {
+                if (!context.plugin.supportsPlatform(context.platform)) {
                     respondUnsupportedPlatform(handlingCommand, context)
                     return@suspendLogPlatform
                 }
 
-                if (context.module.visibility == ModuleVisibility.DEVELOPER && !context.callerIsDeveloper()) {
+                if (context.plugin.visibility == PluginVisibility.DEVELOPER && !context.callerIsDeveloper()) {
                     return@suspendLogPlatform // exit silently.
                 }
 

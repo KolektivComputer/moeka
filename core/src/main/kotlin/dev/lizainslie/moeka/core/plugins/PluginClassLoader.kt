@@ -1,9 +1,9 @@
-package dev.lizainslie.moeka.core.modules
+package dev.lizainslie.moeka.core.plugins
 
 import java.net.URL
 import java.net.URLClassLoader
 
-class ModuleClassLoader(
+class PluginClassLoader(
     jarUrl: URL,
     parent: ClassLoader,
 ) : URLClassLoader(arrayOf(jarUrl), parent) {

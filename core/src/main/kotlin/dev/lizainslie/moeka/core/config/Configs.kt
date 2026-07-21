@@ -45,7 +45,7 @@ object Configs {
     }
 
     @Suppress("UNCHECKED_CAST")
-    inline fun <reified TConfig : ConfigBase> moduleConfig(moduleName: String): Config<TConfig> {
+    inline fun <reified TConfig : ConfigBase> pluginConfig(moduleName: String): Config<TConfig> {
         val key = getConfigKey<TConfig>()
         if (loadedConfigs.any { it.key == key }) {
             return loadedConfigs.first { it.key == key } as Config<TConfig>

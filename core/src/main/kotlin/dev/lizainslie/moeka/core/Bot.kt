@@ -4,20 +4,20 @@ import dev.lizainslie.moeka.core.commands.Commands
 import dev.lizainslie.moeka.core.config.Configs
 import dev.lizainslie.moeka.core.data.DbContext
 import dev.lizainslie.moeka.core.data.tables.DeveloperOptionsTable
-import dev.lizainslie.moeka.core.data.tables.ModuleCommunitySettingsTable
+import dev.lizainslie.moeka.core.data.tables.PluginCommunitySettingsTable
 import dev.lizainslie.moeka.core.data.tables.ModuleSwitchTable
-import dev.lizainslie.moeka.core.data.tables.ModuleVersionTable
+import dev.lizainslie.moeka.core.data.tables.PluginVersionTable
 import dev.lizainslie.moeka.core.fs.BotFS
 import dev.lizainslie.moeka.core.logging.Logging
 import dev.lizainslie.moeka.core.manual.ManualRegistry
-import dev.lizainslie.moeka.core.modules.AbstractModule
-import dev.lizainslie.moeka.core.modules.ModuleRegistry
+import dev.lizainslie.moeka.core.plugins.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.PluginRegistry
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 
 class Bot(
-    vararg val baseModules: AbstractModule = emptyArray(),
+    vararg val baseModules: AbstractPlugin = emptyArray(),
 ) {
-    val modules = ModuleRegistry(this)
+    val plugins = PluginRegistry(this)
     val commands = Commands(this)
     val manPages = ManualRegistry()
 
@@ -33,19 +33,19 @@ class Bot(
         Logging.init()
 
         DbContext.connect()
-        DbContext.tables += ModuleVersionTable
+        DbContext.tables += PluginVersionTable
         DbContext.tables += ModuleSwitchTable
         DbContext.tables += DeveloperOptionsTable
-        DbContext.tables += ModuleCommunitySettingsTable
+        DbContext.tables += PluginCommunitySettingsTable
         DbContext.migrate()
     }
 
     suspend fun loadModules() {
         baseModules.forEach {
-            modules.loadBundledModule(it)
+            plugins.loadBundledModule(it)
         }
 
-        modules.loadJarModules()
+        plugins.loadJarPlugins()
     }
 
     fun enablePlatforms(vararg platforms: AnyPlatformAdapter) {
@@ -65,7 +65,7 @@ class Bot(
             it.initialize(this)
         }
 
-        modules.initialize()
+        plugins.initialize()
     }
 
     suspend fun start() {
@@ -79,7 +79,7 @@ class Bot(
             it.stop()
         }
 
-        modules.unloadAll()
+        plugins.unloadAll()
         BotFS.Temp.cleanup()
     }
 }

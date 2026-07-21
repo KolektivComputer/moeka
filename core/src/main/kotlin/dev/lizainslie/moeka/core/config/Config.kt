@@ -41,7 +41,7 @@ class Config<TConfig : ConfigBase>(
 
     private val file: File =
         when (annotation.type) {
-            ConfigType.MODULE -> {
+            ConfigType.PLUGIN -> {
                 if (moduleName == null) throw RuntimeException("Error loading module config ${klass.simpleName}: moduleName is null")
                 BotFS.moduleConfigDir.resolve(moduleName).resolve(annotation.name)
             }

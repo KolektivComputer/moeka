@@ -7,7 +7,7 @@ import dev.kord.rest.builder.message.EmbedBuilder
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.CommandContext
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArguments
-import dev.lizainslie.moeka.core.modules.AbstractModule
+import dev.lizainslie.moeka.core.plugins.AbstractPlugin
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.platforms.discord.Discord
 import dev.lizainslie.moeka.platforms.discord.entities.DiscordResponse
@@ -15,7 +15,7 @@ import dev.lizainslie.moeka.platforms.discord.extensions.snowflake
 
 abstract class DiscordCommandContext(
     bot: Bot,
-    module: AbstractModule,
+    module: AbstractPlugin,
     arguments: ResolvedArguments,
 ) : CommandContext(bot, module, Discord, arguments) {
     abstract val channelId: PlatformId

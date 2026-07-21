@@ -1,4 +1,4 @@
-package dev.lizainslie.moeka.core.modules.settings.schema
+package dev.lizainslie.moeka.core.plugins.settings.schema
 
 const val SETTING_KEY_MAX_LENGTH = 255
 

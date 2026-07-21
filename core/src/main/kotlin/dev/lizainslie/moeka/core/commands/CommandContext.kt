@@ -4,7 +4,7 @@ import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.argument.ArgumentDescriptor
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArguments
 import dev.lizainslie.moeka.core.data.entities.DeveloperOptions
-import dev.lizainslie.moeka.core.modules.AbstractModule
+import dev.lizainslie.moeka.core.plugins.AbstractPlugin
 import dev.lizainslie.moeka.core.platforms.AnyPlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.entities.PlatformResponse
@@ -15,7 +15,7 @@ import kotlin.reflect.KProperty
 
 abstract class CommandContext(
     val bot: Bot,
-    val module: AbstractModule,
+    val plugin: AbstractPlugin,
     val platform: AnyPlatformAdapter,
     val args: ResolvedArguments,
 ) {

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalContracts::class)
 
-package dev.lizainslie.moeka.core.modules.settings.schema
+package dev.lizainslie.moeka.core.plugins.settings.schema
 
 import java.awt.Color
 import java.util.EnumSet

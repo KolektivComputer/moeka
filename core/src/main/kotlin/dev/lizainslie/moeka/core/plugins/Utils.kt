@@ -1,16 +1,16 @@
-package dev.lizainslie.moeka.core.modules
+package dev.lizainslie.moeka.core.plugins
 
 // Track visit state for topo sort
 internal enum class Mark { TEMP, PERM }
 
-fun MutableList<LoadedModule>.sortByDependencies() {
+fun MutableList<LoadedPlugin>.sortByDependencies() {
     // Build a name -> module map for quick lookups.
     val moduleByName = associateBy { it.instance.name }
 
     val marks = mutableMapOf<String, Mark>()
-    val result = ArrayList<LoadedModule>(size)
+    val result = ArrayList<LoadedPlugin>(size)
 
-    fun visit(module: LoadedModule) {
+    fun visit(module: LoadedPlugin) {
         val name = module.instance.name
 
         when (marks[name]) {

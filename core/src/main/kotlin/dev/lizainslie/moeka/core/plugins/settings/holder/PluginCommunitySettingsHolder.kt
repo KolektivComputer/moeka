@@ -1,18 +1,18 @@
-package dev.lizainslie.moeka.core.modules.settings.holder
+package dev.lizainslie.moeka.core.plugins.settings.holder
 
-import dev.lizainslie.moeka.core.data.entities.ModuleCommunitySetting
-import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
+import dev.lizainslie.moeka.core.data.entities.PluginCommunitySetting
+import dev.lizainslie.moeka.core.plugins.settings.schema.SettingDefinition
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
-class ModuleCommunitySettingsHolder(
+class PluginCommunitySettingsHolder(
     val moduleName: String,
     val communityId: PlatformId,
     definitions: List<SettingDefinition<*>>
 ) : AbstractSettingsHolder(definitions) {
     inline fun <reified TSettingValue : Any> getSetting(key: String): TSettingValue? {
         val definition = getDefinition<TSettingValue>(key)
-        val setting = transaction { ModuleCommunitySetting.find(moduleName, communityId, key) }
+        val setting = transaction { PluginCommunitySetting.find(moduleName, communityId, key) }
         return setting?.getValue(definition) ?: definition.defaultValue
     }
 
@@ -20,7 +20,7 @@ class ModuleCommunitySettingsHolder(
 
     inline fun <reified TSettingValue : Any> getSettingRequired(key: String): TSettingValue {
         val definition = getDefinition<TSettingValue>(key)
-        val setting = transaction { ModuleCommunitySetting.find(moduleName, communityId, key) }
+        val setting = transaction { PluginCommunitySetting.find(moduleName, communityId, key) }
 
         return setting?.getValue(definition)
             ?: definition.defaultValue
@@ -29,10 +29,10 @@ class ModuleCommunitySettingsHolder(
 
     inline fun <reified TSettingValue: Any> setSetting(key: String, value: TSettingValue?) {
         val definition = getDefinition<TSettingValue>(key)
-        var setting = transaction { ModuleCommunitySetting.find(moduleName, communityId, key) }
+        var setting = transaction { PluginCommunitySetting.find(moduleName, communityId, key) }
 
         if (setting == null)
-            setting = transaction { ModuleCommunitySetting.new(moduleName, communityId, key) }
+            setting = transaction { PluginCommunitySetting.new(moduleName, communityId, key) }
 
         transaction { setting.setValue(definition, value) }
     }

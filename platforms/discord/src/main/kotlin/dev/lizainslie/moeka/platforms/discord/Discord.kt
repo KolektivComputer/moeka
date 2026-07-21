@@ -23,9 +23,9 @@ import dev.lizainslie.moeka.core.commands.argument.PlatformArgumentParseFn
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArgument
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArguments
 import dev.lizainslie.moeka.core.config.Configs
-import dev.lizainslie.moeka.core.logging.suspendLogModule
-import dev.lizainslie.moeka.core.modules.AbstractModule
-import dev.lizainslie.moeka.core.modules.ModuleVisibility
+import dev.lizainslie.moeka.core.logging.suspendLogPlugin
+import dev.lizainslie.moeka.core.plugins.AbstractPlugin
+import dev.lizainslie.moeka.core.plugins.PluginVisibility
 import dev.lizainslie.moeka.core.platforms.PlatformAdapter
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.core.platforms.PlatformKey
@@ -188,9 +188,9 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
 
     override suspend fun registerCommand(
         command: RootCommand,
-        module: AbstractModule,
+        plugin: AbstractPlugin,
     ) {
-        if (!command.communityOnly && module.visibility != ModuleVisibility.DEVELOPER && config.registerCommandsGlobally) {
+        if (!command.communityOnly && plugin.visibility != PluginVisibility.DEVELOPER && config.registerCommandsGlobally) {
             log.info("Registering global command ${command.name}")
             kord.createGlobalChatInputCommand(
                 command.name,
@@ -210,7 +210,7 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
         }
 
         for (guildConf in config.guilds) {
-            if (module.visibility == ModuleVisibility.DEVELOPER && !guildConf.admin) continue
+            if (plugin.visibility == PluginVisibility.DEVELOPER && !guildConf.admin) continue
 
             log.info("registering command ${command.name} in guild ${guildConf.id}")
             val registeredCmd =
@@ -236,7 +236,7 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
 
     override suspend fun unregisterCommand(
         command: RootCommand,
-        module: AbstractModule,
+        plugin: AbstractPlugin,
     ) {
         if (!command.communityOnly && config.registerCommandsGlobally) {
             log.info("Getting all registered global commands to unregister ${command.name}")
@@ -260,7 +260,7 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
         }
 
         for (guildConf in config.guilds) {
-            if (module.visibility == ModuleVisibility.DEVELOPER && !guildConf.admin) continue
+            if (plugin.visibility == PluginVisibility.DEVELOPER && !guildConf.admin) continue
 
             log.debug("Getting all registered commands in guild {} to unregister {}", guildConf.id, command.name)
 
@@ -335,12 +335,12 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
                 return@suspendLogPlatform
             }
 
-            suspendLogModule(registration.module) {
-                if (!registration.module.isEnabledForCommunity(interaction.guildId.platform)) {
+            suspendLogPlugin(registration.plugin) {
+                if (!registration.plugin.isEnabledForCommunity(interaction.guildId.platform)) {
                     interaction.respondEphemeral {
                         content = "Command ${interactionCmd.rootName} is not enabled for this community"
                     }
-                    return@suspendLogModule
+                    return@suspendLogPlugin
                 }
 
                 val command = registration.command
@@ -363,7 +363,7 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
                             content = "Subcommand $subCommandName not found"
                         }
                         log.warn("Subcommand $subCommandName not found")
-                        return@suspendLogModule
+                        return@suspendLogPlugin
                     }
 
                     log.debug("Using subcommand: ${subCommand.name}")
@@ -416,7 +416,7 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
                         }
                     }
 
-                    return@suspendLogModule
+                    return@suspendLogPlugin
                 }
 
                 val resolvedArguments =
@@ -458,7 +458,7 @@ object Discord : PlatformAdapter<DiscordCommandConfig>(
                     handlingCommand,
                     DiscordSlashCommandContext(
                         bot = bot,
-                        module = registration.module,
+                        module = registration.plugin,
                         arguments = ResolvedArguments(resolvedArguments),
                         interaction = interaction,
                     ),

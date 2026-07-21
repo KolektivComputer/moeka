@@ -1,10 +1,9 @@
 package dev.lizainslie.moeka.core.data.tables
 
-import dev.lizainslie.moeka.core.modules.settings.schema.SETTING_KEY_MAX_LENGTH
-import org.jetbrains.exposed.v1.core.Table
+import dev.lizainslie.moeka.core.plugins.settings.schema.SETTING_KEY_MAX_LENGTH
 import org.jetbrains.exposed.v1.core.dao.id.CompositeIdTable
 
-object ModuleCommunitySettingsTable : CompositeIdTable("module_community_settings") {
+object PluginCommunitySettingsTable : CompositeIdTable("module_community_settings") {
     val moduleName = varchar("module_name", 255).entityId()
     val platform = varchar("platform", 32).entityId()
     val communityId = varchar("community_id", 255).entityId()

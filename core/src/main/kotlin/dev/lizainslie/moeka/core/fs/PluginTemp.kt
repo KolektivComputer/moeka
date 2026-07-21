@@ -2,10 +2,10 @@ package dev.lizainslie.moeka.core.fs
 
 import java.io.File
 
-class ModuleTemp(
+class PluginTemp(
     val directory: File,
 ) {
-    val contexts = mutableListOf<ModuleTempContext>()
+    val contexts = mutableListOf<PluginTempContext>()
 
     init {
         if (directory.exists() && !directory.isDirectory) {
@@ -23,13 +23,13 @@ class ModuleTemp(
         directory.deleteRecursively()
     }
 
-    fun createContext(): ModuleTempContext {
-        val context = ModuleTempContext(this)
+    fun createContext(): PluginTempContext {
+        val context = PluginTempContext(this)
         contexts += context
         return context
     }
 
-    fun removeContext(context: ModuleTempContext) {
+    fun removeContext(context: PluginTempContext) {
         context.cleanup()
         contexts -= context
     }

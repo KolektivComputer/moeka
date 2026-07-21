@@ -1,7 +1,6 @@
-package dev.lizainslie.moeka.core.modules.settings.schema
+package dev.lizainslie.moeka.core.plugins.settings.schema
 
 import dev.lizainslie.moeka.core.data.serializers.ColorAsHexSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

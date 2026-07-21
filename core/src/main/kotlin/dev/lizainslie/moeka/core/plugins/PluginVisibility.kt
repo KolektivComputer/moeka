@@ -1,9 +1,9 @@
-package dev.lizainslie.moeka.core.modules
+package dev.lizainslie.moeka.core.plugins
 
 /**
  * ModuleVisibility represents the visibility level of a module within the bot.
  */
-enum class ModuleVisibility {
+enum class PluginVisibility {
     /**
      * Public modules are accessible to all users.
      */

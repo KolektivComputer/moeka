@@ -1,6 +1,6 @@
 package dev.lizainslie.moeka.core.manual
 
-import dev.lizainslie.moeka.core.modules.AbstractModule
+import dev.lizainslie.moeka.core.plugins.AbstractPlugin
 
 class ManualRegistry {
     val globalManuals: MutableList<Manual> = mutableListOf()
@@ -11,7 +11,7 @@ class ManualRegistry {
     }
 
     fun registerModuleManPage(
-        module: AbstractModule,
+        module: AbstractPlugin,
         man: Manual,
     ) {
         moduleManPages.getOrPut(module.name) { mutableListOf() } += man
