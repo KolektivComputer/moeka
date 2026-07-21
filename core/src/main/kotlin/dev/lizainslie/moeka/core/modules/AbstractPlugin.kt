@@ -4,7 +4,6 @@ import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.RootCommand
 import dev.lizainslie.moeka.core.config.ConfigBase
 import dev.lizainslie.moeka.core.config.Configs
-import dev.lizainslie.moeka.core.data.entities.ModuleSwitch
 import dev.lizainslie.moeka.core.fs.BotFS
 import dev.lizainslie.moeka.core.fs.ModuleTemp
 import dev.lizainslie.moeka.core.fs.ModuleTempContext
@@ -40,14 +39,39 @@ abstract class AbstractPlugin(
     protected lateinit var bot: Bot
     protected val log: Logger = LoggerFactory.getLogger(this::class.java)
 
-    protected var communitySettingsDefinitions: List<SettingDefinition<*>>? = null
+    protected val communitySettingsDefinitions = mutableListOf<SettingDefinition<*>>()
+    protected val userSettingsDefinitions = mutableListOf<SettingDefinition<*>>()
+
+    private val baseSettings = defineSettings {
+        bool(
+            key = PLUGIN_ENABLED_SETTING_KEY,
+            displayName = "Enabled",
+            description = "Is this plugin enabled?", // todo: context aware builder for this
+            defaultValue = !optional,
+            optional = false,
+        )
+    }
+
+    init {
+        communitySettingsDefinitions += baseSettings
+        userSettingsDefinitions += baseSettings
+    }
 
     val communitySettings by lazy {
-        PluginCommunitySettingsMap(name, communitySettingsDefinitions ?: emptyList())
+        PluginCommunitySettingsMap(name, communitySettingsDefinitions)
+    }
+
+    val userSettings: Unit by lazy {
+        TODO()
     }
 
     fun defineCommunitySettings(block: SettingDefinitionDsl.() -> Unit) {
-        communitySettingsDefinitions = defineSettings(block)
+        communitySettingsDefinitions += defineSettings(block)
+    }
+
+    protected fun defineUserSettings(block: SettingDefinitionDsl.() -> Unit) {
+        //oops
+        communitySettingsDefinitions += defineSettings(block)
     }
 
     lateinit var manifest: PluginManifest
@@ -71,7 +95,7 @@ abstract class AbstractPlugin(
 
     open fun isEnabledForCommunity(communityId: PlatformId) =
         transaction {
-            supportsPlatform(communityId.platform) && ModuleSwitch.isModuleEnabled(communityId, name)
+            supportsPlatform(communityId.platform) && communitySettings[communityId].getSettingRequired<Boolean>(PLUGIN_ENABLED_SETTING_KEY)
         }
 
     fun supportsPlatform(platform: AnyPlatformAdapter) =
@@ -100,5 +124,9 @@ abstract class AbstractPlugin(
 
     override fun registerManPage(man: Manual) {
         bot.manPages.registerModuleManPage(this, man)
+    }
+
+    companion object {
+        const val PLUGIN_ENABLED_SETTING_KEY = "enabled"
     }
 }
