@@ -1,8 +1,8 @@
 package dev.lizainslie.moeka.core.commands
 
-import dev.lizainslie.moeka.core.modules.AbstractModule
+import dev.lizainslie.moeka.core.modules.AbstractPlugin
 
 data class CommandRegistration(
     val command: RootCommand,
-    val module: AbstractModule,
+    val module: AbstractPlugin,
 )

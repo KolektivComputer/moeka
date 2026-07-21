@@ -4,7 +4,7 @@ package dev.lizainslie.moeka.core.modules
  * ModuleSource represents the origin of a module, indicating whether it is
  * built-in or added externally through jar loading.
  */
-enum class ModuleSource {
+enum class PluginSource {
     /**
      * Internal modules are built into the bot and are typically part of its core
      * functionality.

@@ -3,7 +3,7 @@ package dev.lizainslie.moeka.core.modules
 import java.net.URL
 import java.net.URLClassLoader
 
-class ModuleClassLoader(
+class PluginClassLoader(
     jarUrl: URL,
     parent: ClassLoader,
 ) : URLClassLoader(arrayOf(jarUrl), parent) {

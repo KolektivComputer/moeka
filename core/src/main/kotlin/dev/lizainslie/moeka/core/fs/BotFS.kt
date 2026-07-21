@@ -1,6 +1,5 @@
 package dev.lizainslie.moeka.core.fs
 
-import dev.lizainslie.moeka.core.Bot
 import java.io.File
 import java.nio.file.Paths
 
@@ -19,12 +18,12 @@ object BotFS {
     val configDir = baseDir.resolve("config")
 
     val platformConfigDir = configDir.resolve("platforms")
-    val moduleConfigDir = configDir.resolve("modules")
+    val moduleConfigDir = configDir.resolve("plugins")
 
     /**
      * The directory where hosts are expected to place modules
      */
-    val modulesDir = baseDir.resolve("modules")
+    val pluginsDir = baseDir.resolve("plugins")
 
     fun generateBaseStructure() {
         // create the config directory & its substructure if it doesn't exist
@@ -33,7 +32,7 @@ object BotFS {
         if (!moduleConfigDir.exists()) moduleConfigDir.mkdirs()
 
         // create the modules directory if it doesn't exist
-        if (!modulesDir.exists()) modulesDir.mkdirs()
+        if (!pluginsDir.exists()) pluginsDir.mkdirs()
     }
 
     object Temp {
@@ -45,9 +44,9 @@ object BotFS {
                 .absoluteFile
                 .apply { if (!exists()) mkdirs() }
 
-        val modules =
+        val plugins =
             dir
-                .resolve("modules")
+                .resolve("plugins")
                 .apply { if (!exists()) mkdirs() }
 
         /**

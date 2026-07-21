@@ -3,11 +3,11 @@ package dev.lizainslie.moeka.core.commands
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.config.Configs
 import dev.lizainslie.moeka.core.data.entities.DeveloperOptions
-import dev.lizainslie.moeka.core.logging.suspendLogModule
+import dev.lizainslie.moeka.core.logging.suspendLogPlugin
 import dev.lizainslie.moeka.core.logging.suspendLogPlatform
 import dev.lizainslie.moeka.core.logging.suspendLogTag
-import dev.lizainslie.moeka.core.modules.AbstractModule
-import dev.lizainslie.moeka.core.modules.ModuleVisibility
+import dev.lizainslie.moeka.core.modules.AbstractPlugin
+import dev.lizainslie.moeka.core.modules.PluginVisibility
 import dev.lizainslie.moeka.core.platforms.UnsupportedPlatformException
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 import org.slf4j.LoggerFactory
@@ -21,9 +21,9 @@ class Commands(
 
     suspend fun registerCommand(
         command: RootCommand,
-        module: AbstractModule,
+        module: AbstractPlugin,
     ) {
-        suspendLogModule(module) {
+        suspendLogPlugin(module) {
             log.info("Registering command: '${command.name}'.")
             commands.add(CommandRegistration(command, module))
 
@@ -39,8 +39,8 @@ class Commands(
         }
     }
 
-    suspend fun unregisterModuleCommands(module: AbstractModule) {
-        suspendLogModule(module) {
+    suspend fun unregisterModuleCommands(module: AbstractPlugin) {
+        suspendLogPlugin(module) {
             log.info("Unregistering commands for module '${module.name}'.")
             val toRemove = commands.filter { it.module == module }
             commands.removeAll(toRemove)
@@ -57,8 +57,8 @@ class Commands(
         }
     }
 
-    suspend fun registerModuleCommands(module: AbstractModule) {
-        suspendLogModule(module) {
+    suspend fun registerModuleCommands(module: AbstractPlugin) {
+        suspendLogPlugin(module) {
             log.info("Registering commands for module '${module.name}'.")
             for (command in module.commands) {
                 registerCommand(command, module)
@@ -97,14 +97,14 @@ class Commands(
         handlingCommand: BaseCommand,
         context: CommandContext,
     ) {
-        suspendLogModule(context.module) {
+        suspendLogPlugin(context.module) {
             suspendLogPlatform(context.platform) {
                 if (!context.module.supportsPlatform(context.platform)) {
                     respondUnsupportedPlatform(handlingCommand, context)
                     return@suspendLogPlatform
                 }
 
-                if (context.module.visibility == ModuleVisibility.DEVELOPER && !context.callerIsDeveloper()) {
+                if (context.module.visibility == PluginVisibility.DEVELOPER && !context.callerIsDeveloper()) {
                     return@suspendLogPlatform // exit silently.
                 }
 

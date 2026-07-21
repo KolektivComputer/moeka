@@ -5,7 +5,7 @@ import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
-class ModuleCommunitySettingsHolder(
+class PluginCommunitySettingsHolder(
     val moduleName: String,
     val communityId: PlatformId,
     definitions: List<SettingDefinition<*>>

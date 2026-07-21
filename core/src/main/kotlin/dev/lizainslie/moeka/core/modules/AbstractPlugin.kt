@@ -10,8 +10,7 @@ import dev.lizainslie.moeka.core.fs.ModuleTemp
 import dev.lizainslie.moeka.core.fs.ModuleTempContext
 import dev.lizainslie.moeka.core.manual.Manual
 import dev.lizainslie.moeka.core.manual.ManualProvider
-import dev.lizainslie.moeka.core.modules.settings.ModuleCommunitySettingsMap
-import dev.lizainslie.moeka.core.modules.settings.holder.ModuleCommunitySettingsHolder
+import dev.lizainslie.moeka.core.modules.settings.PluginCommunitySettingsMap
 import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinition
 import dev.lizainslie.moeka.core.modules.settings.schema.SettingDefinitionDsl
 import dev.lizainslie.moeka.core.modules.settings.schema.defineSettings
@@ -25,10 +24,10 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-abstract class AbstractModule(
+abstract class AbstractPlugin(
     val name: String,
     val optional: Boolean = true,
-    val visibility: ModuleVisibility = ModuleVisibility.PUBLIC,
+    val visibility: PluginVisibility = PluginVisibility.PUBLIC,
     val description: String = "No description provided",
     val commands: Set<RootCommand> = emptySet(),
     val tables: Set<Table> = emptySet(),
@@ -36,7 +35,7 @@ abstract class AbstractModule(
 ) : ManualProvider {
     val temp =
         ModuleTemp(
-            BotFS.Temp.modules.resolve(name),
+            BotFS.Temp.plugins.resolve(name),
         )
     protected lateinit var bot: Bot
     protected val log: Logger = LoggerFactory.getLogger(this::class.java)
@@ -44,17 +43,17 @@ abstract class AbstractModule(
     protected var communitySettingsDefinitions: List<SettingDefinition<*>>? = null
 
     val communitySettings by lazy {
-        ModuleCommunitySettingsMap(name, communitySettingsDefinitions ?: emptyList())
+        PluginCommunitySettingsMap(name, communitySettingsDefinitions ?: emptyList())
     }
 
     fun defineCommunitySettings(block: SettingDefinitionDsl.() -> Unit) {
         communitySettingsDefinitions = defineSettings(block)
     }
 
-    lateinit var manifest: ModuleManifest
+    lateinit var manifest: PluginManifest
         private set
 
-    fun loadManifest(moduleManifest: ModuleManifest) {
+    fun loadManifest(moduleManifest: PluginManifest) {
         manifest = moduleManifest
     }
 

@@ -8,7 +8,7 @@ import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.embed
 import dev.lizainslie.moeka.core.Bot
 import dev.lizainslie.moeka.core.commands.argument.ResolvedArguments
-import dev.lizainslie.moeka.core.modules.AbstractModule
+import dev.lizainslie.moeka.core.modules.AbstractPlugin
 import dev.lizainslie.moeka.core.platforms.PlatformId
 import dev.lizainslie.moeka.platforms.discord.entities.DiscordSlashCommandResponse
 import dev.lizainslie.moeka.platforms.discord.extensions.platform
@@ -16,7 +16,7 @@ import kotlinx.datetime.Clock
 
 class DiscordSlashCommandContext(
     bot: Bot,
-    module: AbstractModule,
+    module: AbstractPlugin,
     arguments: ResolvedArguments,
     val interaction: ChatInputCommandInteraction,
 ) : DiscordCommandContext(bot, module, arguments) {
