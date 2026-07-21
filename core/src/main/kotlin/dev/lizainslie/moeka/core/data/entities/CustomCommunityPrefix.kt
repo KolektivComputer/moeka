@@ -9,7 +9,6 @@ import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.dao.CompositeEntity
 import org.jetbrains.exposed.v1.dao.CompositeEntityClass
 
-
 class CustomCommunityPrefix(
     id: EntityID<CompositeID>,
 ) : CompositeEntity(id) {

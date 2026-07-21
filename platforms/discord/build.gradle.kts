@@ -1,11 +1,8 @@
 plugins {
-    // Apply the shared build logic from a convention plugin.
-    // The shared code is located in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`.
     id("buildsrc.convention.kotlin-jvm")
-    // Apply Kotlin Serialization plugin from `gradle/libs.versions.toml`.
     alias(libs.plugins.kotlinPluginSerialization)
-    alias(libs.plugins.mavenPublish)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.mavenPublish)
 }
 
 group = rootProject.group
@@ -14,7 +11,7 @@ version = rootProject.version
 dependencies {
     api(project(":core"))
 
-    implementation(libs.bundles.exposed)
+    implementation(libs.bundles.database)
 
     implementation(libs.kord.core)
     implementation(libs.korelibs.validate.core)

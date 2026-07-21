@@ -31,9 +31,8 @@ class ModuleCommunitySettingsHolder(
         val definition = getDefinition<TSettingValue>(key)
         var setting = transaction { ModuleCommunitySetting.find(moduleName, communityId, key) }
 
-        if (setting == null) {
+        if (setting == null)
             setting = transaction { ModuleCommunitySetting.new(moduleName, communityId, key) }
-        }
 
         transaction { setting.setValue(definition, value) }
     }
