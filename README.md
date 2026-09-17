@@ -4,9 +4,17 @@ A multiplatform, modular engine for writing bots across Discord, Matrix, and oth
 
 Discord is live today. Matrix is planned as an own-protocol client and appservice path, not a wrapper around a single vendor SDK. Platform adapters stay library-agnostic behind an SPI.
 
-## Include Moeka
+## Roadmap (locked)
 
-Add the Maven repository that currently hosts the artifacts:
+**Platform bridge (v1)** — Discord ↔ Matrix. Bridge communities and selected chats. Users may link multiple accounts and reach their communities across those platforms. Consent and mod surfaces stay explicit. E2EE limits get disclosed, not papered over.
+
+**Module unload** — Unload soft-disables the module: data and tables stay, serving stops. After a configurable idle period it enters quarantine. After a further configurable period, admins are prompted to archive or purge. Plugins ship their own migrations. Archives restore across versions by replaying that migration chain.
+
+**Extensions vs modules** — Extensions are build-time (dashboard, HTTP, CDM, platform-bridge). Modules are hotloadable feature packs that plug into those hooks.
+
+Tracking: [epic #2](https://github.com/KolektivComputer/moeka/issues/2).
+
+## Include Moeka
 
 ```kt
 maven {
@@ -14,11 +22,9 @@ maven {
 }
 ```
 
-Latest release at time of writing: `0.0.2`. Prefer the [release browser](https://repo.lizainslie.dev/#browse/browse:maven-releases:dev%2Flizainslie%2Fmoeka) over trusting this number forever. Coordinates will move to KolektivComputer publishing in a follow-up; until then they remain `dev.lizainslie.moeka:*`.
+Latest release at time of writing: `0.0.2`. Prefer the [release browser](https://repo.lizainslie.dev/#browse/browse:maven-releases:dev%2Flizainslie%2Fmoeka). Coordinates remain `dev.lizainslie.moeka:*` until KolektivComputer publishing lands.
 
 ### Module
-
-Do not shade core or platform modules. Use `api`:
 
 ```kt
 dependencies {
@@ -31,18 +37,12 @@ See [moeka-example-module](https://github.com/KolektivComputer/moeka-example-mod
 
 ### Bot
 
-Shade core and platforms into your jar:
-
 ```kt
 dependencies {
     implementation("dev.lizainslie.moeka:moeka-core:$version")
     implementation("dev.lizainslie.moeka:moeka-discord:$version")
 }
 ```
-
-## Docs
-
-Not yet. Source of truth is this repo and the example module until a docs site exists.
 
 ## License
 
