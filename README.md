@@ -1,24 +1,24 @@
 # Moeka
-A multiplatform, modular framework for writing bots across Discord, Matrix, and
-other platforms. Originally written for [Pitohui][pito_source].
 
-## Including Moeka in Your Project:
-Whether you are writing a module or a bot, you'll need to add my repository:
+A multiplatform, modular engine for writing bots across Discord, Matrix, and other platforms. Built for [Pitohui](https://github.com/LizAinslie/pitohui) and other bots.
+
+Discord is live today. Matrix is planned as an own-protocol client and appservice path, not a wrapper around a single vendor SDK. Platform adapters stay library-agnostic behind an SPI.
+
+## Include Moeka
+
+Add the Maven repository that currently hosts the artifacts:
+
 ```kt
-// build.gradle.kts, settings.gradle.kts, wherever you define your repositories,
-// add this declaration:
 maven {
     url = uri("https://repo.lizainslie.dev/repository/maven-public/")
 }
 ```
 
-The latest Moeka version at the time of writing is `0.0.2`, however I won't
-promise this page will stay up to date with the latest version. instead, please
-view the list of [available releases][moeka_releases]
+Latest release at time of writing: `0.0.2`. Prefer the [release browser](https://repo.lizainslie.dev/#browse/browse:maven-releases:dev%2Flizainslie%2Fmoeka) over trusting this number forever. Coordinates will move to KolektivComputer publishing in a follow-up; until then they remain `dev.lizainslie.moeka:*`.
 
-### Creating a Module
-If you are developing a module, do not shade the core or platform module, use
-`api` instead of `implementation`:
+### Module
+
+Do not shade core or platform modules. Use `api`:
 
 ```kt
 dependencies {
@@ -27,13 +27,11 @@ dependencies {
 }
 ```
 
-You can look at the [example module][moeka_example_module] for an example module
-implementation.
+See [moeka-example-module](https://github.com/KolektivComputer/moeka-example-module).
 
-### Creating a Bot
+### Bot
 
-Creating a bot is more complicated than creating a module, but to get started,
-you will want to shade the Moeka core and any necessary platforms into your jar.
+Shade core and platforms into your jar:
 
 ```kt
 dependencies {
@@ -42,12 +40,10 @@ dependencies {
 }
 ```
 
-## Documentation?
-**Soon:tm:** (when I feel like it)
+## Docs
 
-## Legal
-Moeka is released under the permissive [MIT License](LICENSE).
+Not yet. Source of truth is this repo and the example module until a docs site exists.
 
-[pito_source]: https://git.lizainslie.dev/crackcafe/pitohui
-[moeka_releases]: https://repo.lizainslie.dev/#browse/browse:maven-releases:dev%2Flizainslie%2Fmoeka
-[moeka_example_module]: https://git.lizainslie.dev/crackcafe/moeka-example-module
+## License
+
+[MIT](LICENSE) · [KolektivComputer/moeka](https://github.com/KolektivComputer/moeka)
