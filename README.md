@@ -1,6 +1,6 @@
 # Moeka
 
-A multiplatform, modular engine for writing bots across Discord, Matrix, and other platforms. Built for [Pitohui](https://github.com/LizAinslie/pitohui) and other bots.
+A multiplatform, modular engine for writing bots across Discord, Matrix, and other platforms. Built for [Pitohui](https://github.com/Crack-Cafe/pitohui) and other bots.
 
 Discord is live today. Matrix is planned as an own-protocol client and appservice path, not a wrapper around a single vendor SDK. Platform adapters stay library-agnostic behind an SPI.
 
